@@ -24,12 +24,13 @@ DimensionClass = React.createClass
 
     inject = (row, toInject) ->
       row.unshift div {className: 'column'}, toInject
-      div {className: 'row'}, row
+      div {className: 'row'}, 
+        row
     injectNothing = (row) ->
       inject row, ''
     injectTimes = (rows) ->
       _.map rows, (row, index) ->
-        inject row, index
+        inject row, p {className: 'point'}, index
 
     div {},
       div {className: 'row'},
@@ -39,12 +40,16 @@ DimensionClass = React.createClass
             value: @props.pageName
             onChange: @handleDimensionName
       injectNothing _.map (_.pluck @props.voices, 'name'), (name) ->
-        div {className: 'column'}, name
+        div {className: 'column'}, 
+          p
+            className: 'point'
+            name
       div {},
         injectTimes _.map rowsAndCols, (row, beatIndex) =>
           _.map row, (col, voiceIndex) =>
             div {className: 'column'},
               input
+                className: 'input'
                 key: "#{name}-#{col}"
                 defaultValue: col ? ''
                 'data-voice': voiceIndex
