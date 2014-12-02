@@ -124,7 +124,7 @@ AppClass = React.createClass
     @state.project.piece.voices[voiceIndex].attributes.ypos = newYpos
     @setState project: @state.project
 
-  voiceAdd: () ->
+  voiceAdd: ->
     newName = '0'
     allTheNames = _.pluck @state.project.piece.voices, 'name'
     while 'voice' + newName in allTheNames
@@ -137,6 +137,10 @@ AppClass = React.createClass
         type: 'sine'
       score: []
     @state.project.piece.voices.push newVoice
+    @setState project: @state.project
+
+  voiceDestroy: (voiceIndex) ->
+    @state.project.piece.voices.splice voiceIndex, 1
     @setState project: @state.project
 
   seedAdd: (voiceIndex) ->
@@ -179,7 +183,6 @@ AppClass = React.createClass
         extraBeatIndex++
 
     @setState project: @state.project
-
 
   onNoteChange: (voiceIndex, beatIndex, value) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
@@ -234,6 +237,7 @@ AppClass = React.createClass
             onVoiceYposChange: @voiceYposChange
             onSeedAdd: @seedAdd
             onVoiceAdd: @voiceAdd
+            onVoiceDestroy: @voiceDestroy
 
             scale: @state.project.piece.scale
             onScaleAdd: @scaleAdd

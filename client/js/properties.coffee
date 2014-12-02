@@ -5,6 +5,10 @@ _ = require 'lodash'
 
 PropertiesClass = React.createClass
 
+  getInitialState: ->
+    deleteScaleClass: 'submit half'
+    deleteScaleValue: 'xx'
+
   beatLengthChangeHandle: (event) ->
     newBeatLength = event.target.value
     @props.onBeatLengthChange newBeatLength
@@ -13,7 +17,13 @@ PropertiesClass = React.createClass
     @props.onScaleAdd()
 
   scaleDestroy: ->
-    @props.onScaleDestroy()
+    if @state.deleteScaleValue is 'xx'
+      @setState deleteScaleValue: 'x'
+      @setState deleteScaleClass: 'submit half critical'
+    else
+      @props.onScaleDestroy()
+      @setState deleteScaleValue: 'xx'
+      @setState deleteScaleClass: 'submit half'
 
   noteChangeHandle: (event) ->
     stepIndex = parseInt event.target.getAttribute 'data-index'
@@ -72,10 +82,10 @@ PropertiesClass = React.createClass
 
         div {className: 'column half'},
           input
-            className: 'submit half'
-            type:      'submit'
+            className:  @state.deleteScaleClass
+            type:       'submit'
             onClick:    @scaleDestroy
-            value:      'xx'
+            value:      @state.deleteScaleValue
 
       div {className: 'row'},
         div {className: 'column'},

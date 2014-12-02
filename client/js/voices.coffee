@@ -7,6 +7,21 @@ types = ['sine', 'saw']
 
 VoicesClass = React.createClass
 
+  getInitialState: ->
+    removeValues = []
+    removeClasses = []
+
+    for voice in @props.voices
+      removeValues.push 'xx'
+      removeClasses.push 'submit half'
+
+    outputStates =
+      removeValues: removeValues
+      removeClasses: removeClasses
+
+    console.log 'A', outputStates
+    return outputStates
+
   typeChangeHandle: (event) ->
     voiceIndex = parseInt event.target.getAttribute 'data-index'
     type = event.target.value
@@ -38,6 +53,23 @@ VoicesClass = React.createClass
 
   voiceAdd: ->
     @props.onVoiceAdd()
+    @state.removeValues.push 'xx'
+    @state.removeClasses.push 'submit half'
+
+    @setState removeValues: @state.removeValues
+    @setState removeClasses: @state.removeClasses
+
+  voiceDestroy: ->
+    voiceIndex = parseInt event.target.getAttribute 'data-index'
+    if @state.removeValues[voiceIndex] is 'xx'
+      @state.removeValues[voiceIndex] = 'x'
+      @setState removeValues: @state.removeValues
+      @state.removeClasses[voiceIndex] = 'submit half critical'
+      @setState removeClasses: @state.removeClasses
+    else
+      @state.removeClasses.splice voiceIndex, 1
+      @state.removeValues.splice voiceIndex, 1
+      @props.onVoiceDestroy voiceIndex
 
   render: ->
     div {},
@@ -128,9 +160,11 @@ VoicesClass = React.createClass
 
           div {className: 'column half'},
             input
-              className:      'submit half'
+              className:      @state.removeClasses[voiceIndex]
               type:           'submit'
-              value:          'xx'
+              value:          @state.removeValues[voiceIndex]
+              onClick:        @voiceDestroy
+              'data-index':   voiceIndex
 
 
       div {className: 'row'},

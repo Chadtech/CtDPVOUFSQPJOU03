@@ -164,6 +164,9 @@ body {
 .submit.critical {
   background: #f23d21;
 }
+.submit.critical:hover {
+  background: #f29d31;
+}
 .submit.fleeting {
   background: tsOliveDrab;
   color: tsMcDonaldsYellow;
