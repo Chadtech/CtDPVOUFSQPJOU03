@@ -17,6 +17,9 @@ VoicesClass = React.createClass
     name = event.target.value
     @props.onVoiceNameChange voiceIndex, name
 
+  voiceAdd: ->
+    @props.onVoiceAdd()
+
   render: ->
     div {},
       div {className: 'row'},
@@ -35,6 +38,26 @@ VoicesClass = React.createClass
             className: 'point'
             'type'
 
+        div {className: 'column half'},
+          p
+            className: 'point'
+            'seed'
+
+        div {className: 'column half'},
+          p
+            className: 'point'
+            'x pos'
+
+        div {className: 'column half'},
+          p
+            className: 'point'
+            'y pos'
+
+        div {className: 'column half'},
+          p
+            className: 'point'
+            'remove'
+
       _.map @props.voices, (voice, voiceIndex) =>
         div {className: 'row'},
           div {className: 'column half'},
@@ -51,11 +74,39 @@ VoicesClass = React.createClass
               onChange: @typeChangeHandle
               'data-index': voiceIndex
 
+          div {className: 'column half'},
+            input
+              className: 'input half'
+              value: voice.attributes.type
+              onChange: @typeChangeHandle
+              'data-index': voiceIndex
+
+          div {className: 'column half'},
+            input
+              className: 'input half'
+              value: 0
+              onChange: @typeChangeHandle
+              'data-index': voiceIndex
+
+          div {className: 'column half'},
+            input
+              className: 'input half'
+              value: 0
+              onChange: @typeChangeHandle
+              'data-index': voiceIndex
+
+          div {className: 'column half'},
+            input
+              className: 'submit half'
+              value: 'x'
+              type: 'submit'
+
       div {className: 'row'},
         div {className: 'column half'},
           input
             className: 'submit half'
             type: 'submit'
+            onClick: @voiceAdd
             value: '+'
 
 

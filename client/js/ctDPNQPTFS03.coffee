@@ -1,4 +1,5 @@
 React = require 'react'
+_ = require 'lodash'
 Properties = require './properties'
 Dimension = require './dimension'
 Voices = require './voices'
@@ -15,6 +16,9 @@ project =
         name: 'voice0'
         attributes:
           type: 'sine'
+          xpos: 0
+          ypos: 0
+          seed: ''
         score: [
           {
             '2': 1
@@ -26,6 +30,9 @@ project =
         name: 'voice1'
         attributes:
           type: 'saw'
+          xpos: 0
+          ypos: 0
+          seed: ''
         score: [
           {'2': 1}
           {
@@ -87,6 +94,22 @@ AppClass = React.createClass
     @state.project.piece.voices[voiceIndex].name = newName
     @setState project: @state.project
 
+  voiceAdd: () ->
+    newName = '0'
+    console.log @state.project.piece.voices
+    allTheNames = _.pluck @state.project.piece.voices, 'name'
+    while 'voice' + newName in allTheNames
+      newName = parseInt newName
+      newName++
+      newName += ''
+    newVoice = 
+      name: 'voice' + newName
+      attributes:
+        type: 'sine'
+      score: []
+    @state.project.piece.voices.push newVoice
+    @setState project: @state.project
+
   onNoteChange: (voiceIndex, beatIndex, value) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
     beat[@state.pageIndex] = value
@@ -134,7 +157,9 @@ AppClass = React.createClass
             voices: @state.project.piece.voices
             onVoiceTypeChange: @voiceTypeChange
             onVoiceNameChange: @voiceNameChange
+            onVoiceAdd: @voiceAdd
             onNoteChange: @onNoteChange
+
 
 App = React.createFactory AppClass
 
