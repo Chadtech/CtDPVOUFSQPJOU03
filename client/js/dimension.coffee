@@ -13,6 +13,10 @@ DimensionClass = React.createClass
     @props.onNameChange @props.pageIndex, event.target.value
 
   onNoteChange: (event) ->
+    event.preventDefault()
+    if event.keydown is 8
+      return false
+
     voiceIndex = parseInt event.target.getAttribute 'data-voice'
     beatIndex = parseInt event.target.getAttribute 'data-beat'
     value = parseFloat event.target.value
@@ -23,7 +27,7 @@ DimensionClass = React.createClass
     rowsAndCols = getRowsAndCols @props.voices, @props.pageIndex
 
     inject = (row, toInject) ->
-      row.unshift div {className: 'column'}, toInject
+      row.unshift div {className: 'column half'}, toInject
       div {className: 'row'}, 
         row
     injectNothing = (row) ->
@@ -40,16 +44,16 @@ DimensionClass = React.createClass
             value: @props.pageName
             onChange: @handleDimensionName
       injectNothing _.map (_.pluck @props.voices, 'name'), (name) ->
-        div {className: 'column'}, 
+        div {className: 'column half'}, 
           p
             className: 'point'
             name
       div {},
         injectTimes _.map rowsAndCols, (row, beatIndex) =>
           _.map row, (col, voiceIndex) =>
-            div {className: 'column'},
+            div {className: 'column half'},
               input
-                className: 'input'
+                className: 'input half'
                 key: "#{name}-#{col}"
                 defaultValue: col ? ''
                 'data-voice': voiceIndex

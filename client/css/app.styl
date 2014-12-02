@@ -7,10 +7,7 @@
 @font-face
   font-family CtCommandPrompt
   src url('Command-Prompt-12x16.ttf')
-  
-tsOliveDrab = rgba(68, 56, 11, 1)
-tsMcDonaldsYellow = #f3d31b
-  
+
 specifyFont(inputColor)
   font-smooth never
   -webkit-font-smoothing none
@@ -109,6 +106,8 @@ body
   &.fleeting
     color tsMcDonaldsYellow
     background tsOliveDrab
+  &.half
+    width 88px
   &.wide
     width 379px
   &.problem
@@ -131,6 +130,8 @@ body
   specifyFont(rgba(0, 0, 0, 1))
   background rgba(64, 64, 64, 1)
   text-decoration none
+  &.half
+    width 88px
   &.fleeting
     background tsOliveDrab
     color tsMcDonaldsYellow

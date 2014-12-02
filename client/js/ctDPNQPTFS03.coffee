@@ -83,12 +83,16 @@ AppClass = React.createClass
     @state.project.piece.voices[voiceIndex].attributes.type = newType
     @setState project: @state.project
 
+  voiceNameChange: (voiceIndex, newName) ->
+    @state.project.piece.voices[voiceIndex].name = newName
+    @setState project: @state.project
+
   onNoteChange: (voiceIndex, beatIndex, value) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
     beat[@state.pageIndex] = value
     @state.project.piece.voices[voiceIndex].score[beatIndex] = beat
     @setState project: @state.project
-    
+
   render: ->
     div {},
       div {className: 'spacer'}
@@ -105,6 +109,7 @@ AppClass = React.createClass
                 value: @state.project.title
                 onChange: @pieceTitleHandle
                 placeholder: '<piece name>'
+                spellCheck: 'false'
 
           div {className: 'row'},
             for page in @state.project.pages
@@ -128,6 +133,7 @@ AppClass = React.createClass
             onNameChange: @dimensionNameChange
             voices: @state.project.piece.voices
             onVoiceTypeChange: @voiceTypeChange
+            onVoiceNameChange: @voiceNameChange
             onNoteChange: @onNoteChange
 
 App = React.createFactory AppClass

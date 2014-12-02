@@ -116,8 +116,11 @@ body {
   outline: none;
 }
 .input.fleeting {
-  color: #f3d31b;
-  background: #44380b;
+  color: tsMcDonaldsYellow;
+  background: tsOliveDrab;
+}
+.input.half {
+  width: 88px;
 }
 .input.wide {
   width: 379px;
@@ -152,9 +155,12 @@ body {
   border: none;
   outline: none;
 }
+.submit.half {
+  width: 88px;
+}
 .submit.fleeting {
-  background: #44380b;
-  color: #f3d31b;
+  background: tsOliveDrab;
+  color: tsMcDonaldsYellow;
 }
 .submit.wide {
   width: 370px;
