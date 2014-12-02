@@ -59,23 +59,23 @@ PropertiesClass = React.createClass
           div {className: 'column half'},
             input
               className: 'input half'
-              onChange: @noteChangeHandle
-              value: @props.scale[stepIndex]
+              onChange:     @noteChangeHandle
+              value:        @props.scale[stepIndex]
               'data-index': stepIndex
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            type: 'submit'
-            onClick: @scaleAdd
-            value: '+'
+            type:      'submit'
+            onClick:   @scaleAdd
+            value:     '+'
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            type: 'submit'
-            onClick: @scaleDestroy
-            value: 'xx'
+            type:      'submit'
+            onClick:    @scaleDestroy
+            value:      'xx'
 
       div {className: 'row'},
         div {className: 'column'},
@@ -86,8 +86,8 @@ PropertiesClass = React.createClass
           div {className: 'column'},
             input
               className: 'submit'
-              type: 'submit'
-              value: dimension
+              type:      'submit'
+              value:     dimension
 
       div {className: 'row'},
         div {className: 'column'},
@@ -97,8 +97,8 @@ PropertiesClass = React.createClass
         div {className: 'column'},
           input
             className: 'input'
-            onChange: @tonicChangeHandle
-            value: @props.tonic
+            onChange:  @tonicChangeHandle
+            value:     @props.tonic
 
       div {className: 'row'},
         div {className: 'column'},
@@ -109,7 +109,7 @@ PropertiesClass = React.createClass
           input
             className: 'input'
             onChange: @barLengthChangeHandle
-            value: @props.barLength
+            value:    @props.barLength
 
       div {className: 'row'},
         div {className: 'column'},
@@ -121,15 +121,6 @@ PropertiesClass = React.createClass
             className: 'input'
             onChange: @subLengthChangeHandle
             value: @props.subLength
-
-
-
-
-
-
-
-
-
 
 Properties = React.createFactory PropertiesClass
 

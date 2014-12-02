@@ -22,6 +22,15 @@ DimensionClass = React.createClass
     value = parseFloat event.target.value
     @props.onNoteChange voiceIndex, beatIndex, value
 
+  highLightRow: (rowNumber, modulus) ->
+    if rowNumber % modulus is 0
+      return ' mark'
+    return ''
+
+  appendBar: ->
+    console.log 'A'
+    @props.onAppendBar()
+
   render: ->
 
     rowsAndCols = getRowsAndCols @props.voices, @props.pageIndex
@@ -32,9 +41,17 @@ DimensionClass = React.createClass
         row
     injectNothing = (row) ->
       inject row, ''
-    injectTimes = (rows) ->
-      _.map rows, (row, index) ->
-        inject row, p {className: 'point'}, index
+    injectTimes = (rows) =>
+      _.map rows, (row, index) =>
+        beatExpression = index // @props.barLength
+        beatExpression += ''
+        while beatExpression.length < 5
+          beatExpression = beatExpression + '>'
+
+        beatExpression += '>'
+        beatExpression += index % @props.barLength
+
+        inject row, p {className: 'point'}, beatExpression
 
     div {},
       div {className: 'row'},
@@ -48,17 +65,25 @@ DimensionClass = React.createClass
           p
             className: 'point'
             name
-      div {},
-        injectTimes _.map rowsAndCols, (row, beatIndex) =>
-          _.map row, (col, voiceIndex) =>
-            div {className: 'column half'},
-              input
-                className: 'input half'
-                key: "#{name}-#{col}"
-                defaultValue: col ? ''
-                'data-voice': voiceIndex
-                'data-beat': beatIndex
-                onChange: @onNoteChange
+      injectTimes _.map rowsAndCols, (row, beatIndex) =>
+        _.map row, (col, voiceIndex) =>
+          div {className: 'column half'},
+            input
+              className: 'input half'
+              key: "#{name}-#{col}"
+              defaultValue: col ? ''
+              'data-voice': voiceIndex
+              'data-beat': beatIndex
+              onChange: @onNoteChange
+
+      div {className: 'row'},
+        div {className: 'column half'},
+          input
+            className: 'submit half'
+            type: 'submit'
+            value: '+ bar'
+            onClick: @appendBar
+
 
 Dimension = React.createFactory DimensionClass
 

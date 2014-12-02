@@ -21,9 +21,16 @@ project =
           seed: undefined
         score: [
           {
-            '2': 1
-            '3': 400
+            '2': '0.5'
+            '3': '50'
           }
+          {}
+          {}
+          {}
+          {}
+          {}
+          {}
+          {}
         ]
       }
       {
@@ -34,11 +41,16 @@ project =
           ypos: '0'
           seed: undefined
         score: [
-          {'2': 1}
           {
-            '2': 0.5
-            '3': 400
+            '2': '0.5'
+            '3': '44'
           }
+          {}
+          {}
+          {}
+          {}
+          {}
+          {}
         ]
       }
     ]
@@ -47,6 +59,7 @@ project =
     beatLength: '22050'
     barLength: '8'
     subLength: '2'
+    convolveSeed: undefined
   time: {}
 
 AppClass = React.createClass
@@ -158,6 +171,16 @@ AppClass = React.createClass
     @state.project.piece.subLength = newSubLength
     @setState project: @state.project
 
+  appendBar: ->
+    for voice in @props.project.piece.voices
+      extraBeatIndex = 0
+      while extraBeatIndex < @props.project.piece.barLength
+        voice.score.push {}
+        extraBeatIndex++
+
+    @setState project: @state.project
+
+
   onNoteChange: (voiceIndex, beatIndex, value) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
     beat[@state.pageIndex] = value
@@ -231,6 +254,7 @@ AppClass = React.createClass
                 return false
               return true
 
+            onAppendBar: @appendBar
 
 
             onNoteChange: @onNoteChange
