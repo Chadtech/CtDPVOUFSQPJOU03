@@ -35,6 +35,9 @@ body {
   width: 194px;
   min-height: 1.75em;
 }
+.column.quarter {
+  width: 44px;
+}
 .column.half {
   width: 97px;
 }

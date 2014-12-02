@@ -46,9 +46,9 @@ DimensionClass = React.createClass
         beatExpression = index // @props.barLength
         beatExpression += ''
         while beatExpression.length < 5
-          beatExpression = beatExpression + '>'
+          beatExpression = '0' + beatExpression
 
-        beatExpression += '>'
+        beatExpression += '.'
         beatExpression += index % @props.barLength
 
         inject row, p {className: 'point'}, beatExpression
