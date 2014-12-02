@@ -11,11 +11,16 @@ PropertiesClass = React.createClass
       dimensionClasses.push 'submit'
 
     initialStates =
+      newDimensionsName: ''
       deleteScaleClass: 'submit half'
       deleteScaleValue: 'xx'
       dimensionClasses: dimensionClasses
 
     return initialStates
+
+  newDimensionsNameHandle: (event) ->
+    newDimensionsName = event.target.value
+    @setState newDimensionsName: newDimensionsName
 
   beatLengthChangeHandle: (event) ->
     newBeatLength = event.target.value
@@ -62,7 +67,8 @@ PropertiesClass = React.createClass
       @setState dimensionClasses: @state.dimensionClasses
 
   dimensionAdd: ->
-    @props.onDimensionAdd()
+    @props.onDimensionAdd @state.newDimensionsName
+    @setState newDimensionsName: ''
     @state.dimensionClasses.push 'submit'
     @setState dimensionClasses: @state.dimensionClasses
 
@@ -114,7 +120,7 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
-            'remove dime..'
+            'remove'
 
         _.map @props.dimensions, (dimension, dimensionIndex) =>
           div {className: 'column'},
@@ -128,11 +134,18 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
-            'add dimension'
+            'add'
 
-        div {className: 'column'},
+        div {className: 'column oneAndHalf'},
           input
-            className: 'submit'
+            className: 'input oneAndHalf'
+            onChange: @newDimensionsNameHandle
+            value: @state.newDimensionsName
+            placeholder: '<dimension name>'
+
+        div {className: 'column half'},
+          input
+            className: 'submit half'
             type:      'submit'
             value:     '+'
             onClick:    @dimensionAdd

@@ -41,6 +41,9 @@ body {
 .column.half {
   width: 97px;
 }
+.column.oneAndHalf {
+  width: 291px;
+}
 .column.double {
   width: 388px;
 }
@@ -69,6 +72,7 @@ body {
 .point {
   transition: all 0.5s;
   font-smooth: never;
+  webkit-font-smoothing: none;
   -webkit-font-smoothing: none;
   font-family: CtCommandPrompt;
   font-size: 1em;
@@ -80,6 +84,7 @@ body {
 }
 .formTitle {
   font-smooth: never;
+  webkit-font-smoothing: none;
   -webkit-font-smoothing: none;
   font-family: CtCommandPrompt;
   font-size: 1em;
@@ -109,6 +114,7 @@ body {
   padding-right: 0em;
   width: 185px;
   font-smooth: never;
+  webkit-font-smoothing: none;
   -webkit-font-smoothing: none;
   font-family: CtCommandPrompt;
   font-size: 1em;
@@ -124,6 +130,9 @@ body {
 }
 .input.half {
   width: 88px;
+}
+.input.oneAndHalf {
+  width: 282px;
 }
 .input.wide {
   width: 379px;
@@ -148,6 +157,7 @@ body {
   padding-left: 0em;
   padding-right: 0em;
   font-smooth: never;
+  webkit-font-smoothing: none;
   -webkit-font-smoothing: none;
   font-family: CtCommandPrompt;
   font-size: 1em;

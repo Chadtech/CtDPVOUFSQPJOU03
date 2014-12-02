@@ -10,6 +10,7 @@ Voices = require './voices'
 project =
   title: ''
   pages: ['properties', 'voices', 'amplitude', 'tone']
+  dimensions: ['amplitude', 'tone']
   piece:
     voices: [
       {
@@ -21,8 +22,8 @@ project =
           seed: undefined
         score: [
           {
-            '2': '0.5'
-            '3': '50'
+            '0': '0.5'
+            '1': '50'
           }
           {}
           {}
@@ -42,8 +43,8 @@ project =
           seed: undefined
         score: [
           {
-            '2': '0.5'
-            '3': '44'
+            '0': '0.5'
+            '1': '44'
           }
           {}
           {}
@@ -80,11 +81,21 @@ AppClass = React.createClass
     @state.project.title = event.target.value
     @setState project: @state.project
     
-  addDimension: ->
-    newDimensionName = '0'
-    while ('dimension ' + newDimensionName) in @state.project.pages
-      newDimensionName = parseInt(newDimensionName) + 1 + ''
-    @state.project.pages = @state.project.pages.concat(['dimension ' + newDimensionName])
+  addDimension: (newDimensionsName) ->
+    nameOfLastResort = '0'
+    while ('dimension ' + nameOfLastResort) in @state.project.pages
+      nameOfLastResort = parseInt(nameOfLastResort) + 1 + ''
+    nameOfLastResort = 'dimension ' + nameOfLastResort
+    nameIsInPages = newDimensionsName in @state.project.pages
+    if not nameIsInPages
+      @state.project.pages = @state.project.pages.concat [newDimensionsName]
+      if not (newDimensionsName in @state.project.dimensions)
+        @state.project.dimensions.push newDimensionsName
+    else
+      @state.project.pages = @state.project.pages.concat [nameOfLastResort]
+      if not (nameOfLastResort in @state.project.pages)
+        @state.project.dimensions.push nameOfLastResort
+
     @setState project: @state.project
 
   tabClick: (event) ->
