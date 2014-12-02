@@ -42,6 +42,11 @@ project =
         ]
       }
     ]
+    scale: []
+    tonic: '25'
+    beatLength: '22050'
+    barLength: '8'
+    subLength: '2'
   time: {}
 
 AppClass = React.createClass
@@ -108,7 +113,6 @@ AppClass = React.createClass
 
   voiceAdd: () ->
     newName = '0'
-    console.log @state.project.piece.voices
     allTheNames = _.pluck @state.project.piece.voices, 'name'
     while 'voice' + newName in allTheNames
       newName = parseInt newName
@@ -123,8 +127,35 @@ AppClass = React.createClass
     @setState project: @state.project
 
   seedAdd: (voiceIndex) ->
-    console.log 'A', @state.project.piece.voices[voiceIndex]
     @state.project.piece.voices[voiceIndex].attributes.seed = ''
+    @setState project: @state.project
+
+  beatLengthChange: (beatLength) ->
+    @state.project.piece.beatLength = beatLength
+    @setState project: @state.project
+
+  scaleAdd: ->
+    @state.project.piece.scale.push ''
+    @setState project: @state.project
+
+  scaleDestroy: ->
+    @state.project.piece.scale = []
+    @setState project: @state.project
+
+  stepChange: (stepIndex, newStep) ->
+    @state.project.piece.scale[stepIndex] = newStep
+    @setState project: @state.project
+
+  tonicChange: (newTonic) ->
+    @state.project.piece.tonic = newTonic
+    @setState project: @state.project
+
+  barLengthChange: (newBarLength) ->
+    @state.project.piece.barLength = newBarLength
+    @setState project: @state.project
+
+  subLengthChange: (newSubLength) ->
+    @state.project.piece.subLength = newSubLength
     @setState project: @state.project
 
   onNoteChange: (voiceIndex, beatIndex, value) ->
@@ -171,6 +202,7 @@ AppClass = React.createClass
             pageIndex: @state.pageIndex
             pageName: @state.project.pages[@state.pageIndex]
             onNameChange: @dimensionNameChange
+
             voices: @state.project.piece.voices
             onVoiceTypeChange: @voiceTypeChange
             onVoiceNameChange: @voiceNameChange
@@ -179,6 +211,28 @@ AppClass = React.createClass
             onVoiceYposChange: @voiceYposChange
             onSeedAdd: @seedAdd
             onVoiceAdd: @voiceAdd
+
+            scale: @state.project.piece.scale
+            onScaleAdd: @scaleAdd
+            onScaleDestroy: @scaleDestroy
+            onStepChange: @stepChange
+            tonic: @state.project.piece.tonic
+            onTonicChange: @tonicChange
+            barLength: @state.project.piece.barLength
+            subLength: @state.project.piece.subLength
+            onBarLengthChange: @barLengthChange
+            onSubLengthChange: @subLengthChange
+            beatLength: @props.project.piece.beatLength
+            onBeatLengthChange: @beatLengthChange
+            dimensions: _.filter @props.project.pages, (page) ->
+              if page is 'properties'
+                return false
+              if page is 'voices'
+                return false
+              return true
+
+
+
             onNoteChange: @onNoteChange
 
 

@@ -96,9 +96,8 @@ body
 .input
   transition all 1s
   margin-right 1em
-  padding-left 0em
+  padding-left 1em
   padding-right 0em
-
   width 185px
   specifyFont(rgba(192, 192, 192, 1))
   background rgba(64, 64, 64, 1)
@@ -125,13 +124,15 @@ body
 .submit
   transition all 0.25s
   width 185px
-  padding-left 0.6em
-  padding-right 0.6em
+  padding-left 0em
+  padding-right 0em
   specifyFont(rgba(0, 0, 0, 1))
   background rgba(64, 64, 64, 1)
   text-decoration none
   &.half
     width 88px
+  &.critical
+    background #f23d21
   &.fleeting
     background tsOliveDrab
     color tsMcDonaldsYellow

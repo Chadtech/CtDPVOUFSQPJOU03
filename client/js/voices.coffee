@@ -128,9 +128,10 @@ VoicesClass = React.createClass
 
           div {className: 'column half'},
             input
-              className: 'submit half'
-              value:     'x'
-              type:      'submit'
+              className:      'submit half'
+              type:           'submit'
+              value:          'xx'
+
 
       div {className: 'row'},
         div {className: 'column half'},

@@ -102,7 +102,7 @@ body {
 .input {
   transition: all 1s;
   margin-right: 1em;
-  padding-left: 0em;
+  padding-left: 1em;
   padding-right: 0em;
   width: 185px;
   font-smooth: never;
@@ -142,8 +142,8 @@ body {
 .submit {
   transition: all 0.25s;
   width: 185px;
-  padding-left: 0.6em;
-  padding-right: 0.6em;
+  padding-left: 0em;
+  padding-right: 0em;
   font-smooth: never;
   -webkit-font-smoothing: none;
   font-family: CtCommandPrompt;
@@ -157,6 +157,9 @@ body {
 }
 .submit.half {
   width: 88px;
+}
+.submit.critical {
+  background: #f23d21;
 }
 .submit.fleeting {
   background: tsOliveDrab;
