@@ -16,9 +16,9 @@ project =
         name: 'voice0'
         attributes:
           type: 'sine'
-          xpos: 0
-          ypos: 0
-          seed: ''
+          xpos: '0'
+          ypos: '0'
+          seed: undefined
         score: [
           {
             '2': 1
@@ -30,9 +30,9 @@ project =
         name: 'voice1'
         attributes:
           type: 'saw'
-          xpos: 0
-          ypos: 0
-          seed: ''
+          xpos: '0'
+          ypos: '0'
+          seed: undefined
         score: [
           {'2': 1}
           {
@@ -94,6 +94,18 @@ AppClass = React.createClass
     @state.project.piece.voices[voiceIndex].name = newName
     @setState project: @state.project
 
+  voiceSeedChange: (voiceIndex, newSeed) ->
+    @state.project.piece.voices[voiceIndex].attributes.seed = newSeed
+    @setState project: @state.project
+
+  voiceXposChange: (voiceIndex, newXpos) ->
+    @state.project.piece.voices[voiceIndex].attributes.xpos = newXpos
+    @setState project: @state.project
+
+  voiceYposChange: (voiceIndex, newYpos) ->
+    @state.project.piece.voices[voiceIndex].attributes.ypos = newYpos
+    @setState project: @state.project
+
   voiceAdd: () ->
     newName = '0'
     console.log @state.project.piece.voices
@@ -108,6 +120,11 @@ AppClass = React.createClass
         type: 'sine'
       score: []
     @state.project.piece.voices.push newVoice
+    @setState project: @state.project
+
+  seedAdd: (voiceIndex) ->
+    console.log 'A', @state.project.piece.voices[voiceIndex]
+    @state.project.piece.voices[voiceIndex].attributes.seed = ''
     @setState project: @state.project
 
   onNoteChange: (voiceIndex, beatIndex, value) ->
@@ -157,6 +174,10 @@ AppClass = React.createClass
             voices: @state.project.piece.voices
             onVoiceTypeChange: @voiceTypeChange
             onVoiceNameChange: @voiceNameChange
+            onVoiceSeedChange: @voiceSeedChange
+            onVoiceXposChange: @voiceXposChange
+            onVoiceYposChange: @voiceYposChange
+            onSeedAdd: @seedAdd
             onVoiceAdd: @voiceAdd
             onNoteChange: @onNoteChange
 
