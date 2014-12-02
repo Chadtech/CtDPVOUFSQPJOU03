@@ -6,8 +6,16 @@ _ = require 'lodash'
 PropertiesClass = React.createClass
 
   getInitialState: ->
-    deleteScaleClass: 'submit half'
-    deleteScaleValue: 'xx'
+    dimensionClasses = []
+    for dimension in @props.dimensions
+      dimensionClasses.push 'submit'
+
+    initialStates =
+      deleteScaleClass: 'submit half'
+      deleteScaleValue: 'xx'
+      dimensionClasses: dimensionClasses
+
+    return initialStates
 
   beatLengthChangeHandle: (event) ->
     newBeatLength = event.target.value
@@ -41,6 +49,22 @@ PropertiesClass = React.createClass
   subLengthChangeHandle: (event) ->
     newSubLength = event.target.value
     @props.onSubLengthChange newSubLength
+
+  destroyDimension: (event) ->
+    dimensionIndex = event.target.getAttribute 'data-index'
+    dimensionName = event.target.value
+    if @state.dimensionClasses[dimensionIndex] is 'submit critical'
+      @props.onDimensionDestroy dimensionName
+      @state.dimensionClasses.splice dimensionIndex, 1
+      @setState dimensionClasses: @state.dimensionClasses
+    else
+      @state.dimensionClasses[dimensionIndex] = 'submit critical'
+      @setState dimensionClasses: @state.dimensionClasses
+
+  dimensionAdd: ->
+    @props.onDimensionAdd()
+    @state.dimensionClasses.push 'submit'
+    @setState dimensionClasses: @state.dimensionClasses
 
   render: ->
     div {},
@@ -90,14 +114,28 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
-            'remove'
+            'remove dime..'
 
         _.map @props.dimensions, (dimension, dimensionIndex) =>
           div {className: 'column'},
             input
-              className: 'submit'
-              type:      'submit'
-              value:     dimension
+              className:    @state.dimensionClasses[dimensionIndex]
+              onClick:      @destroyDimension
+              type:         'submit'
+              value:        dimension
+              'data-index': dimensionIndex
+
+      div {className: 'row'},
+        div {className: 'column'},
+          p {className: 'point'},
+            'add dimension'
+
+        div {className: 'column'},
+          input
+            className: 'submit'
+            type:      'submit'
+            value:     '+'
+            onClick:    @dimensionAdd
 
       div {className: 'row'},
         div {className: 'column'},

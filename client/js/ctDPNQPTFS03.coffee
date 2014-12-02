@@ -80,7 +80,7 @@ AppClass = React.createClass
     @state.project.title = event.target.value
     @setState project: @state.project
     
-  addTab: (newPage) ->
+  addDimension: ->
     newDimensionName = '0'
     while ('dimension ' + newDimensionName) in @state.project.pages
       newDimensionName = parseInt(newDimensionName) + 1 + ''
@@ -99,6 +99,16 @@ AppClass = React.createClass
         return Voices props
       else
         return Dimension props
+
+  dimensionDestroy: (dimensionName) ->
+    for page in @state.project.pages
+      if page is dimensionName
+        if page isnt 'properties'
+          if page isnt 'voices'
+            indexToRemove = 
+              @state.project.pages.indexOf dimensionName
+            @state.project.pages.splice indexToRemove, 1
+            @setState project: @state.project
 
   dimensionNameChange: (dimensionIndex, newName) ->
     @state.project.pages[dimensionIndex] = newName
@@ -217,13 +227,6 @@ AppClass = React.createClass
                   value: page
                   onClick: @tabClick
 
-            div {className: 'column'},
-              input
-                className: 'submit'
-                type: 'submit'
-                onClick: @addTab
-                value: '+'
-
           @determineCurrentPage
             pageIndex: @state.pageIndex
             pageName: @state.project.pages[@state.pageIndex]
@@ -257,6 +260,8 @@ AppClass = React.createClass
               if page is 'voices'
                 return false
               return true
+            onDimensionDestroy: @dimensionDestroy
+            onDimensionAdd: @addDimension
 
             onAppendBar: @appendBar
 
