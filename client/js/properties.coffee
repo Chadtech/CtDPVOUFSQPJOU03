@@ -1,7 +1,7 @@
 React = require 'react'
 _ = require 'lodash'
 
-{a, div, input, p} = React.DOM
+{div, input, p} = React.DOM
 
 PropertiesClass = React.createClass
 

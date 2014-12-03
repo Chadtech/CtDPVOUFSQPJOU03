@@ -3,13 +3,13 @@ _ = require 'lodash'
 Properties = require './properties'
 Dimension = require './dimension'
 Voices = require './voices'
+Time = require './time'
 
 {a, p, div, input} = React.DOM
 
-
 project =
   title: ''
-  pages: ['properties', 'voices', 'amplitude', 'tone']
+  pages: ['properties', 'voices', 'time', 'amplitude', 'tone']
   dimensions: ['amplitude', 'tone']
   piece:
     voices: [
@@ -55,6 +55,27 @@ project =
         ]
       }
     ]
+    time: 
+      samples: [
+        '0'
+        '22050'
+        '44100'
+        '66150'
+        '88200'
+        '110250'
+        '132300'
+        '154350'
+      ]
+      rate: [
+        '1'
+        '1'
+        '1'
+        '1'
+        '1'
+        '1'
+        '1'
+        '1'
+      ]
     scale: []
     tonic: '25'
     beatLength: '22050'
@@ -62,13 +83,12 @@ project =
     subLength: '4'
     subModulus: '0'
     convolveSeed: undefined
-  time: {}
 
 AppClass = React.createClass
   getInitialState: ->
     project: @props.project
     pageIndex: 0
-    currentTab: 0
+    displayBar: 0
 
   componentDidMount: ->
     window.getState = =>
@@ -110,6 +130,8 @@ AppClass = React.createClass
         return Properties props
       when 1
         return Voices props
+      when 2
+        return Time props
       else
         return Dimension props
 
@@ -233,6 +255,10 @@ AppClass = React.createClass
     @state.project.piece.voices[voiceIndex].score[beatIndex] = beat
     @setState project: @state.project
 
+  displayBarChange: (newDisplayBar) ->
+    @state.displayBar = newDisplayBar
+    @setState displayBar: @state.displayBar
+
   render: ->
     div {},
       div {className: 'spacer'}
@@ -261,6 +287,8 @@ AppClass = React.createClass
                   onClick: @tabClick
 
           @determineCurrentPage
+            displayBar: @state.displayBar
+            onDisplayBarChange: @displayBarChange
             pageIndex: @state.pageIndex
             dimensionKey: @state.project.dimensions.indexOf @state.project.pages[@state.pageIndex]
             pageName: @state.project.pages[@state.pageIndex]
@@ -295,6 +323,8 @@ AppClass = React.createClass
                 return false
               if page is 'voices'
                 return false
+              if page is 'time'
+                return false
               return true
             onDimensionDestroy: @dimensionDestroy
             onDimensionAdd: @addDimension
@@ -303,8 +333,6 @@ AppClass = React.createClass
             onRemoveBar: @removeBar
             onInsertBar: @insertBar
             onNoteChange: @noteChange
-
-
 
 App = React.createFactory AppClass
 

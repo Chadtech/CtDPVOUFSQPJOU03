@@ -1,7 +1,7 @@
 React = require 'react'
 _ = require 'lodash'
 
-{a, div, input, p, select, option} = React.DOM
+{div, input, p} = React.DOM
 
 types = ['sine', 'saw']
 

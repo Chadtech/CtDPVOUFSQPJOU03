@@ -1,7 +1,7 @@
 React = require 'react'
 _ = require 'lodash'
 
-{a, div, input, p} = React.DOM
+{div, input, p} = React.DOM
 
 getRowsAndColumns = (voices, dimension) ->
   _.zip _.map voices, (voice, voiceIndex) ->
@@ -15,7 +15,7 @@ expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression += '.' + (rowIndex % barLength)
   rowIndexExpression
 
-convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction, insertBarFunction, removeBarFunction, removeValues, removeClasses) =>
+convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction, insertBarFunction, removeBarFunction, removeValues, removeClasses, displayBar) =>
   _.map rowsAndColumns, (row, rowIndex) =>
     inputClassName = 'input half'
     if (rowIndex % barLength) is 0
@@ -120,6 +120,10 @@ DimensionClass = React.createClass
       @setState removeClasses: @state.removeClasses
       @props.onRemoveBar (noteIndex - 1)
 
+  displayBarChangeHandle: (event) ->
+    newDisplayBar = event.target.value
+    @props.onDisplayBarChange newDisplayBar
+
   render: ->
     div {},
       div {className: 'row'},
@@ -127,6 +131,30 @@ DimensionClass = React.createClass
           p
             className: 'point'
             @props.pageName
+
+      div {className: 'row'},
+        div {className: 'column'},
+          p
+            className: 'point'
+            'display bars'
+
+        div {className: 'column half'},
+          input
+            className: 'submit half'
+            type: 'submit'
+            value: '<'
+
+        div {className: 'column half'},
+          input
+            className: 'input half'
+            onChange: @displayBarChangeHandle
+            value: @props.displayBar
+
+        div {className: 'column half'},
+          input
+            className: 'submit half'
+            type: 'submit'
+            value: '>'
 
       div {className: 'row'},
         div {className: 'column half'},
@@ -147,6 +175,7 @@ DimensionClass = React.createClass
         @removeBar
         @state.removeValues
         @state.removeClasses
+        @props.displayBar
 
       div {className: 'row'},
         div {className: 'column half'},
