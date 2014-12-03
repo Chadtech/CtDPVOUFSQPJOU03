@@ -55,6 +55,10 @@ PropertiesClass = React.createClass
     newSubLength = event.target.value
     @props.onSubLengthChange newSubLength
 
+  subModulusChangeHandle: (event) ->
+    newSubModulus = event.target.value
+    @props.onSubModulusChange newSubModulus
+
   destroyDimension: (event) ->
     dimensionIndex = event.target.getAttribute 'data-index'
     dimensionName = event.target.value
@@ -182,6 +186,17 @@ PropertiesClass = React.createClass
             className: 'input'
             onChange: @subLengthChangeHandle
             value: @props.subLength
+
+      div {className: 'row'},
+        div {className: 'column'},
+          p {className: 'point'},
+            'sub modulus'
+
+        div {className: 'column'},
+          input
+            className: 'input'
+            onChange: @subModulusChangeHandle
+            value: @props.subModulus
 
 Properties = React.createFactory PropertiesClass
 

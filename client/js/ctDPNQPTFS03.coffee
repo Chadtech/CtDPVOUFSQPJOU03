@@ -59,7 +59,8 @@ project =
     tonic: '25'
     beatLength: '22050'
     barLength: '8'
-    subLength: '2'
+    subLength: '4'
+    subModulus: '0'
     convolveSeed: undefined
   time: {}
 
@@ -87,6 +88,7 @@ AppClass = React.createClass
       nameOfLastResort = parseInt(nameOfLastResort) + 1 + ''
     nameOfLastResort = 'dimension ' + nameOfLastResort
     nameIsInPages = newDimensionsName in @state.project.pages
+
     if not nameIsInPages
       @state.project.pages = @state.project.pages.concat [newDimensionsName]
       if not (newDimensionsName in @state.project.dimensions)
@@ -196,6 +198,10 @@ AppClass = React.createClass
     @state.project.piece.subLength = newSubLength
     @setState project: @state.project
 
+  subModulusChange: (newSubModulus) ->
+    @state.project.piece.subModulus = newSubModulus
+    @setState project: @state.project
+
   appendBar: ->
     for voice in @props.project.piece.voices
       extraBeatIndex = 0
@@ -240,6 +246,7 @@ AppClass = React.createClass
 
           @determineCurrentPage
             pageIndex: @state.pageIndex
+            dimensionKey: @state.project.dimensions.indexOf @state.project.pages[@state.pageIndex]
             pageName: @state.project.pages[@state.pageIndex]
             onNameChange: @dimensionNameChange
 
@@ -261,8 +268,10 @@ AppClass = React.createClass
             onTonicChange: @tonicChange
             barLength: @state.project.piece.barLength
             subLength: @state.project.piece.subLength
+            subModulus: @state.project.piece.subModulus
             onBarLengthChange: @barLengthChange
             onSubLengthChange: @subLengthChange
+            onSubModulusChange: @subModulusChange
             beatLength: @props.project.piece.beatLength
             onBeatLengthChange: @beatLengthChange
             dimensions: _.filter @props.project.pages, (page) ->

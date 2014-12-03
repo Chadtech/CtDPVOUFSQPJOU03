@@ -124,9 +124,11 @@ body {
   border: none;
   outline: none;
 }
-.input.fleeting {
-  color: tsMcDonaldsYellow;
-  background: tsOliveDrab;
+.input.special {
+  background: #403a20;
+}
+.input.verySpecial {
+  background: #302a14;
 }
 .input.half {
   width: 88px;
