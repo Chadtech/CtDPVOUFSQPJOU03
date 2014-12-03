@@ -220,11 +220,9 @@ AppClass = React.createClass
     @setState project: @state.project
 
   removeBar: (barAt) ->
-    console.log 'B'
     for voice in @props.project.piece.voices
       barAtIteration = 0
       while barAtIteration < @props.project.piece.barLength
-        console.log 'C'
         voice.score.splice barAt, 1
         barAtIteration++
     @setState project: @state.project
