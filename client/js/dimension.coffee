@@ -15,7 +15,7 @@ expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression += '.' + (rowIndex % barLength)
   rowIndexExpression
 
-convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction, insertBarFunction, removeBarFunction, removeValues) =>
+convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction, insertBarFunction, removeBarFunction, removeValues, removeClasses) =>
   _.map rowsAndColumns, (row, rowIndex) =>
     inputClassName = 'input half'
     if (rowIndex % barLength) is 0
@@ -52,7 +52,7 @@ convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cell
       if (rowIndex % barLength) is 1
         div {className: 'column half'},
           input
-            className: 'submit half'
+            className: removeClasses[rowIndex // barLength]
             onClick: removeBarFunction
             type: 'submit'
             'data-note': rowIndex 
@@ -68,13 +68,19 @@ unshiftNoteIndex = (rowsAndColumns, barLength, subLength) ->
 DimensionClass = React.createClass
   getInitialState: ->
     removeValues = []
+    removeClasses = []
     beatIndex = 0
     while beatIndex < @props.voices[0].score.length
       if (beatIndex % @props.barLength) is 0
         removeValues.push 'xx'
+        removeClasses.push 'submit half'
       beatIndex++
 
-    return removeValues: removeValues
+    removeState =
+      removeValues: removeValues
+      removeClasses: removeClasses
+
+    return removeState
 
   handleDimensionName: (event) ->
     @props.onNameChange @props.pageIndex, event.target.value
@@ -88,23 +94,30 @@ DimensionClass = React.createClass
   appendBar: ->
     @props.onAppendBar()
     @state.removeValues.push 'xx'
+    @state.removeClasses.push 'submit half'
     @setState removeValues: @state.removeValues
+    @setState removeClasses: @state.removeClasses
 
   insertBar: (event) ->
     noteIndex = event.target.getAttribute 'data-note'
     @state.removeValues.splice noteIndex, 0, 'xx'
+    @state.removeClasses.splice noteIndex, 0, 'submit half'
     @setState removeValues: @state.removeValues
+    @setState removeClasses: @state.removeClasses
     @props.onInsertBar noteIndex
 
   removeBar: (event) ->
     noteIndex = event.target.getAttribute 'data-note'
     if @state.removeValues[noteIndex // @props.barLength] is 'xx'
       @state.removeValues[noteIndex // @props.barLength] = 'x'
+      @state.removeClasses[noteIndex // @props.barLength] = 'submit half critical'
       @setState removeValues: @state.removeValues
+      @setState removeClasses: @state.removeClasses
     else
-      console.log 'A', noteIndex
       @state.removeValues.splice (noteIndex // @props.barLength), 1
+      @state.removeClasses.splice (noteIndex // @props.barLength), 1
       @setState removeValues: @state.removeValues
+      @setState removeClasses: @state.removeClasses
       @props.onRemoveBar (noteIndex - 1)
 
   render: ->
@@ -133,6 +146,7 @@ DimensionClass = React.createClass
         @insertBar
         @removeBar
         @state.removeValues
+        @state.removeClasses
 
       div {className: 'row'},
         div {className: 'column half'},
