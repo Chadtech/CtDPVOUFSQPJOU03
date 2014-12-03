@@ -211,7 +211,25 @@ AppClass = React.createClass
 
     @setState project: @state.project
 
-  onNoteChange: (voiceIndex, beatIndex, value, dimensionKey) ->
+  insertBar: (barAt) ->
+    for voice in @props.project.piece.voices
+      barAtIteration = 0
+      while barAtIteration < @props.project.piece.barLength
+        voice.score.splice barAt, 0, {}
+        barAtIteration++
+    @setState project: @state.project
+
+  removeBar: (barAt) ->
+    console.log 'B'
+    for voice in @props.project.piece.voices
+      barAtIteration = 0
+      while barAtIteration < @props.project.piece.barLength
+        console.log 'C'
+        voice.score.splice barAt, 1
+        barAtIteration++
+    @setState project: @state.project
+
+  noteChange: (voiceIndex, beatIndex, value, dimensionKey) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
     beat[dimensionKey] = value
     @state.project.piece.voices[voiceIndex].score[beatIndex] = beat
@@ -284,9 +302,10 @@ AppClass = React.createClass
             onDimensionAdd: @addDimension
 
             onAppendBar: @appendBar
+            onRemoveBar: @removeBar
+            onInsertBar: @insertBar
+            onNoteChange: @noteChange
 
-
-            onNoteChange: @onNoteChange
 
 
 App = React.createFactory AppClass

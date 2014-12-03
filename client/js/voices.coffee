@@ -19,7 +19,6 @@ VoicesClass = React.createClass
       removeValues: removeValues
       removeClasses: removeClasses
 
-    console.log 'A', outputStates
     return outputStates
 
   typeChangeHandle: (event) ->
