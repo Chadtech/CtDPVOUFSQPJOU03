@@ -211,9 +211,9 @@ AppClass = React.createClass
 
     @setState project: @state.project
 
-  onNoteChange: (voiceIndex, beatIndex, value) ->
+  onNoteChange: (voiceIndex, beatIndex, value, dimensionKey) ->
     beat = @state.project.piece.voices[voiceIndex].score[beatIndex] ? {}
-    beat[@state.pageIndex] = value
+    beat[dimensionKey] = value
     @state.project.piece.voices[voiceIndex].score[beatIndex] = beat
     @setState project: @state.project
 

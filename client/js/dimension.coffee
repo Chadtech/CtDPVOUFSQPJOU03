@@ -8,8 +8,15 @@ getRowsAndColumns = (voices, dimension) ->
     _.map voice.score, (note) ->
       note?[dimension]
 
-convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus) ->
-  _.map rowsAndColumns, (row, rowIndex) ->
+expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
+  rowIndexExpression = (rowIndex // barLength) + ''
+  while rowIndexExpression.length < 5
+    rowIndexExpression = '0' + rowIndexExpression
+  rowIndexExpression += '.' + (rowIndex % barLength)
+  rowIndexExpression
+
+convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction) =>
+  _.map rowsAndColumns, (row, rowIndex) =>
     inputClassName = 'input half'
     if (rowIndex % barLength) is 0
       inputClassName += ' verySpecial'
@@ -23,17 +30,15 @@ convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus) ->
       div {className: 'column half'},
         p
           className: 'point'
-          (->
-            rowIndexExpression = (rowIndex // barLength) + ''
-            while rowIndexExpression.length < 5
-              rowIndexExpression = '0' + rowIndexExpression
-            rowIndexExpression += '.' + (rowIndex % barLength)
-            )(rowIndex)
-      _.map row, (cell) ->
+          expressRowIndex rowIndex, barLength, subLength, subModulus
+      _.map row, (cell, cellIndex) =>
         div {className: 'column half'},
           input
             className: inputClassName
-            value: cell
+            onChange: cellChangeFunction
+            value: cell ? ''
+            'data-voice': cellIndex
+            'data-note':  rowIndex
 
 unshiftNoteIndex = (rowsAndColumns, barLength, subLength) ->
   noteIndex = 0
@@ -46,12 +51,11 @@ DimensionClass = React.createClass
   handleDimensionName: (event) ->
     @props.onNameChange @props.pageIndex, event.target.value
 
-  onNoteChange: (event) ->
+  noteChange: (event) ->
     voiceIndex = event.target.getAttribute 'data-voice'
     noteIndex = event.target.getAttribute 'data-note'
     value = event.target.value
-
-    @props.onNoteChange voiceIndex, noteIndex, value
+    @props.onNoteChange voiceIndex, noteIndex, value, @props.dimensionKey
 
   appendBar: ->
     @props.onAppendBar()
@@ -78,6 +82,7 @@ DimensionClass = React.createClass
         @props.barLength
         @props.subLength
         @props.subModulus
+        @noteChange
 
 
 Dimension = React.createFactory DimensionClass
