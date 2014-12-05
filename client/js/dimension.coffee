@@ -81,6 +81,12 @@ DimensionClass = React.createClass
     newDisplayBar = event.target.value
     @props.onDisplayBarChange newDisplayBar
 
+  addOneDisplayBar: (event) ->
+    @props.onDisplayBarChange @props.displayBar + 1
+
+  subtractOneDisplayBar: (event) ->
+    @props.onDisplayBarChange @props.displayBar - 1
+
   render: ->
     div {},
       div {className: 'row'},
@@ -98,6 +104,7 @@ DimensionClass = React.createClass
         div {className: 'column half'},
           input
             className: 'submit half'
+            onClick: @subtractOneDisplayBar
             type: 'submit'
             value: '<'
 
@@ -110,6 +117,7 @@ DimensionClass = React.createClass
         div {className: 'column half'},
           input
             className: 'submit half'
+            onClick: @addOneDisplayBar
             type: 'submit'
             value: '>'
 
@@ -123,48 +131,51 @@ DimensionClass = React.createClass
               className: 'point'
               name
 
-      rowsAndColumns = getRowsAndColumns @props.voices, @props.dimensionKey
-      _.map rowsAndColumns, (row, rowIndex) =>
-        inputClassName = 'input half'
-        if (rowIndex % barLength) is 0
-          inputClassName += ' verySpecial'
-        else 
-          barLength = parseInt @props.barLength
-          subLength = parseInt @props.subLength
-          subModulus = parseInt @props.subModulus
-          if (((rowIndex % barLength) + subModulus) % subLength) is 0
-            inputClassName += ' special'
-        div {className: 'row'},
-          div {className: 'column half'},
-            p
-              className: 'point'
-              expressRowIndex rowIndex, barLength, subLength, subModulus
-          _.map row, (cell, cellIndex) =>
-            div {className: 'column half'},
-              input
-                className: inputClassName
-                onChange: @noteChange
-                value: cell ? ''
-                'data-voice': cellIndex
-                'data-note':  rowIndex
-
+      _.map (getRowsAndColumns @props.voices, @props.dimensionKey), (row, rowIndex) =>
+        afterFirstBarToDisplay = (@props.displayBar * @props.barLength) <= rowIndex
+        beforeLastBarToDisplay = rowIndex < ((@props.displayBar + 6) * @props.barLength)
+        if afterFirstBarToDisplay and beforeLastBarToDisplay
+          inputClassName = 'input half'
           if (rowIndex % barLength) is 0
+            inputClassName += ' verySpecial'
+          else 
+            barLength = parseInt @props.barLength
+            subLength = parseInt @props.subLength
+            subModulus = parseInt @props.subModulus
+            if (((rowIndex % barLength) + subModulus) % subLength) is 0
+              inputClassName += ' special'
+          div {className: 'row'},
             div {className: 'column half'},
-              input
-                className: 'submit half'
-                onClick: @insertBar
-                type: 'submit'
-                value: '+ bar'
-                'data-note': rowIndex
+              p
+                className: 'point'
+                expressRowIndex rowIndex, barLength, subLength, subModulus
+            
+            _.map row, (cell, cellIndex) =>
+              div {className: 'column half'},
+                input
+                  className: inputClassName
+                  onChange: @noteChange
+                  value: cell ? ''
+                  'data-voice': cellIndex
+                  'data-note':  rowIndex
 
-          if (rowIndex % barLength) is 1
-            div {className: 'column half'},
-              input
-                className: @state.removeClasses[rowIndex // barLength]
-                onClick: @removeBar
-                type: 'submit'
-                'data-note': rowIndex 
-                value: @state.removeValues[rowIndex // barLength]
+            if (rowIndex % barLength) is 0
+              div {className: 'column half'},
+                input
+                  className: 'submit half'
+                  onClick: @insertBar
+                  type: 'submit'
+                  value: '+ bar'
+                  'data-note': rowIndex
+
+            if (rowIndex % barLength) is 1
+              div {className: 'column half'},
+                input
+                  className: @state.removeClasses[rowIndex // barLength]
+                  onClick: @removeBar
+                  type: 'submit'
+                  'data-note': rowIndex 
+                  value: @state.removeValues[rowIndex // barLength]
 
       div {className: 'row'},
         div {className: 'column half'},

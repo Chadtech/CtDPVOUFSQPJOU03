@@ -334,6 +334,8 @@ AppClass = React.createClass
             onInsertBar: @insertBar
             onNoteChange: @noteChange
 
+            time: @state.project.piece.time
+
 App = React.createFactory AppClass
 
 ctdpnqptfs = new App
