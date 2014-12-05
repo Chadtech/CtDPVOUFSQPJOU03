@@ -231,6 +231,11 @@ AppClass = React.createClass
         voice.score.push {}
         extraBeatIndex++
 
+    extraBeatIndex = 0
+    while extraBeatIndex < @props.project.piece.barLength
+      @props.project.piece.time.rate.push '1'
+      extraBeatIndex++
+
     @setState project: @state.project
 
   insertBar: (barAt) ->
@@ -239,6 +244,12 @@ AppClass = React.createClass
       while barAtIteration < @props.project.piece.barLength
         voice.score.splice barAt, 0, {}
         barAtIteration++
+
+    barAtIteration = 0
+    while barAtIteration < @props.project.piece.barLength
+      @props.project.piece.time.rate.splice barAt, 0, '1'
+      barAtIteration++
+
     @setState project: @state.project
 
   removeBar: (barAt) ->
@@ -247,6 +258,12 @@ AppClass = React.createClass
       while barAtIteration < @props.project.piece.barLength
         voice.score.splice barAt, 1
         barAtIteration++
+
+    barAtIteration = 0
+    while barAtIteration < @props.project.piece.barLength
+      @props.project.piece.time.rate.splice barAt, 1
+      barAtIteration++
+
     @setState project: @state.project
 
   noteChange: (voiceIndex, beatIndex, value, dimensionKey) ->

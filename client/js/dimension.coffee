@@ -85,7 +85,8 @@ DimensionClass = React.createClass
     @props.onDisplayBarChange @props.displayBar + 1
 
   subtractOneDisplayBar: (event) ->
-    @props.onDisplayBarChange @props.displayBar - 1
+    if @props.displayBar > 0
+      @props.onDisplayBarChange @props.displayBar - 1
 
   render: ->
     div {},
