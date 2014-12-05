@@ -291,7 +291,7 @@ AppClass = React.createClass
                 'CtDPNQPTFS03:NFE'
             div {className: 'column double'},
               input
-                className: 'input wide'
+                className: 'input double'
                 value: @state.project.title
                 onChange: @pieceTitleHandle
                 placeholder: '<piece name>'

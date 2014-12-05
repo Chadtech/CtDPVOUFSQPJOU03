@@ -37,7 +37,7 @@ OptionsClass = React.createClass
       div {className: 'row'},
         div {className: 'column double'},
           input
-            className: 'input wide'
+            className: 'input double'
             placeholder: '<piece name>'
 
         div {className: 'column'},
