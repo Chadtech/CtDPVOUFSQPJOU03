@@ -61,7 +61,6 @@ TimeClass = React.createClass
       div {className: 'row'},
         div {className: 'column half'}
 
-
         div {className: 'column half'},
           p
             className: 'point'

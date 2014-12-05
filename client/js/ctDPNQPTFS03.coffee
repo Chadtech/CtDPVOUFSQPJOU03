@@ -4,12 +4,13 @@ Properties = require './properties'
 Dimension = require './dimension'
 Voices = require './voices'
 Time = require './time'
+Options = require './options'
 
 {a, p, div, input} = React.DOM
 
 project =
   title: ''
-  pages: ['properties', 'voices', 'time', 'amplitude', 'tone']
+  pages: ['options', 'properties', 'voices', 'time', 'amplitude', 'tone']
   dimensions: ['amplitude', 'tone']
   piece:
     voices: [
@@ -87,7 +88,7 @@ project =
 AppClass = React.createClass
   getInitialState: ->
     project: @props.project
-    pageIndex: 0
+    pageIndex: 1
     displayBar: 0
 
   componentDidMount: ->
@@ -127,10 +128,12 @@ AppClass = React.createClass
   determineCurrentPage: (props) ->
     switch @state.pageIndex
       when 0
-        return Properties props
+        return Options props
       when 1
-        return Voices props
+        return Properties props
       when 2
+        return Voices props
+      when 3
         return Time props
       else
         return Dimension props
@@ -352,6 +355,10 @@ AppClass = React.createClass
             onNoteChange: @noteChange
 
             time: @state.project.piece.time
+
+            title: @state.project.title
+
+      div {className: 'spacer'}
 
 App = React.createFactory AppClass
 
