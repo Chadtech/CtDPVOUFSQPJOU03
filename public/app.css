@@ -136,7 +136,7 @@ body {
 .input.oneAndHalf {
   width: 282px;
 }
-.input.wide {
+.input.double {
   width: 379px;
 }
 .input.problem {
@@ -183,7 +183,7 @@ body {
   background: tsOliveDrab;
   color: tsMcDonaldsYellow;
 }
-.submit.wide {
+.submit.double {
   width: 370px;
 }
 .submit.add {

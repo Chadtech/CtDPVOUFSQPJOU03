@@ -288,7 +288,7 @@ AppClass = React.createClass
             div {className: 'column double'},
               p
                 className: 'point'
-                'CtDPNQPTFS03:NFE'
+                'CtDopnaqyoptFS03:NFE'
             div {className: 'column double'},
               input
                 className: 'input double'
@@ -344,6 +344,8 @@ AppClass = React.createClass
               if page is 'voices'
                 return false
               if page is 'time'
+                return false
+              if page is 'options'
                 return false
               return true
             onDimensionDestroy: @dimensionDestroy
