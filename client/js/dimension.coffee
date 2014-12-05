@@ -15,49 +15,6 @@ expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression += '.' + (rowIndex % barLength)
   rowIndexExpression
 
-convertToReactElements = (rowsAndColumns, barLength, subLength, subModulus, cellChangeFunction, insertBarFunction, removeBarFunction, removeValues, removeClasses, displayBar) =>
-  _.map rowsAndColumns, (row, rowIndex) =>
-    inputClassName = 'input half'
-    if (rowIndex % barLength) is 0
-      inputClassName += ' verySpecial'
-    else 
-      barLength = parseInt barLength
-      subLength = parseInt subLength
-      subModulus = parseInt subModulus
-      if (((rowIndex % barLength) + subModulus) % subLength) is 0
-        inputClassName += ' special'
-    div {className: 'row'},
-      div {className: 'column half'},
-        p
-          className: 'point'
-          expressRowIndex rowIndex, barLength, subLength, subModulus
-      _.map row, (cell, cellIndex) =>
-        div {className: 'column half'},
-          input
-            className: inputClassName
-            onChange: cellChangeFunction
-            value: cell ? ''
-            'data-voice': cellIndex
-            'data-note':  rowIndex
-
-      if (rowIndex % barLength) is 0
-        div {className: 'column half'},
-          input
-            className: 'submit half'
-            onClick: insertBarFunction
-            type: 'submit'
-            value: '+ bar'
-            'data-note': rowIndex
-
-      if (rowIndex % barLength) is 1
-        div {className: 'column half'},
-          input
-            className: removeClasses[rowIndex // barLength]
-            onClick: removeBarFunction
-            type: 'submit'
-            'data-note': rowIndex 
-            value: removeValues[rowIndex // barLength]
-
 unshiftNoteIndex = (rowsAndColumns, barLength, subLength) ->
   noteIndex = 0
   while noteIndex < rowsAndColumns.length
@@ -166,16 +123,48 @@ DimensionClass = React.createClass
               className: 'point'
               name
 
-      convertToReactElements (getRowsAndColumns @props.voices, @props.dimensionKey),
-        @props.barLength
-        @props.subLength
-        @props.subModulus
-        @noteChange
-        @insertBar
-        @removeBar
-        @state.removeValues
-        @state.removeClasses
-        @props.displayBar
+      rowsAndColumns = getRowsAndColumns @props.voices, @props.dimensionKey
+      _.map rowsAndColumns, (row, rowIndex) =>
+        inputClassName = 'input half'
+        if (rowIndex % barLength) is 0
+          inputClassName += ' verySpecial'
+        else 
+          barLength = parseInt @props.barLength
+          subLength = parseInt @props.subLength
+          subModulus = parseInt @props.subModulus
+          if (((rowIndex % barLength) + subModulus) % subLength) is 0
+            inputClassName += ' special'
+        div {className: 'row'},
+          div {className: 'column half'},
+            p
+              className: 'point'
+              expressRowIndex rowIndex, barLength, subLength, subModulus
+          _.map row, (cell, cellIndex) =>
+            div {className: 'column half'},
+              input
+                className: inputClassName
+                onChange: @noteChange
+                value: cell ? ''
+                'data-voice': cellIndex
+                'data-note':  rowIndex
+
+          if (rowIndex % barLength) is 0
+            div {className: 'column half'},
+              input
+                className: 'submit half'
+                onClick: @insertBar
+                type: 'submit'
+                value: '+ bar'
+                'data-note': rowIndex
+
+          if (rowIndex % barLength) is 1
+            div {className: 'column half'},
+              input
+                className: @state.removeClasses[rowIndex // barLength]
+                onClick: @removeBar
+                type: 'submit'
+                'data-note': rowIndex 
+                value: @state.removeValues[rowIndex // barLength]
 
       div {className: 'row'},
         div {className: 'column half'},
