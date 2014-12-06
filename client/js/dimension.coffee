@@ -137,7 +137,7 @@ DimensionClass = React.createClass
         beforeLastBarToDisplay = rowIndex < ((@props.displayBar + 6) * @props.barLength)
         if afterFirstBarToDisplay and beforeLastBarToDisplay
           inputClassName = 'input half'
-          if (rowIndex % barLength) is 0
+          if (rowIndex % @props.barLength) is 0
             inputClassName += ' verySpecial'
           else 
             barLength = parseInt @props.barLength
