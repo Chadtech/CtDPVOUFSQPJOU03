@@ -10,7 +10,6 @@ getRowsAndColumns = (voices, dimension) ->
 
 expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression = (rowIndex // barLength) + ''
-  console.log 'A', rowIndexExpression, typeof rowIndexExpression
   while rowIndexExpression.length < 5
     rowIndexExpression = '0' + rowIndexExpression
   rowIndexExpression += '.' + (rowIndex % barLength)
@@ -164,7 +163,7 @@ DimensionClass = React.createClass
                   'data-voice': cellIndex
                   'data-note':  rowIndex
 
-            if (rowIndex % barLength) is 0
+            if (rowIndex % @props.barLength) is 0
               div {className: 'column half'},
                 input
                   className: 'submit half'
@@ -173,14 +172,14 @@ DimensionClass = React.createClass
                   value: '+ bar'
                   'data-note': rowIndex
 
-            if (rowIndex % barLength) is 1
+            if (rowIndex % @props.barLength) is 1
               div {className: 'column half'},
                 input
-                  className: @state.removeClasses[rowIndex // barLength]
+                  className: @state.removeClasses[rowIndex // @props.barLength]
                   onClick: @removeBar
                   type: 'submit'
                   'data-note': rowIndex 
-                  value: @state.removeValues[rowIndex // barLength]
+                  value: @state.removeValues[rowIndex // @props.barLength]
 
       div {className: 'row'},
         div {className: 'column half'},
