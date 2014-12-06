@@ -10,6 +10,7 @@ getRowsAndColumns = (voices, dimension) ->
 
 expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression = (rowIndex // barLength) + ''
+  console.log 'A', rowIndexExpression, typeof rowIndexExpression
   while rowIndexExpression.length < 5
     rowIndexExpression = '0' + rowIndexExpression
   rowIndexExpression += '.' + (rowIndex % barLength)
@@ -149,7 +150,10 @@ DimensionClass = React.createClass
             div {className: 'column half'},
               p
                 className: 'point'
-                expressRowIndex rowIndex, barLength, subLength, subModulus
+                expressRowIndex rowIndex, 
+                  @props.barLength
+                  @props.subLength
+                  @props.subModulus
             
             _.map row, (cell, cellIndex) =>
               div {className: 'column half'},
