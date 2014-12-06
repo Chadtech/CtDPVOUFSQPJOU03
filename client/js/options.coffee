@@ -15,6 +15,19 @@ expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
 
 OptionsClass = React.createClass
 
+  getInitialState: ->
+    openFileName: ''
+
+  save: ->
+    @props.save()
+
+  open: ->
+    @props.open @state.openFileName
+
+  openFileNameChangeHandle: (event) ->
+    @state.openFileName = event.target.value
+    @setState openFileName: @state.openFileName
+
   render: ->
     div {},
       div {className: 'row'},
@@ -31,6 +44,7 @@ OptionsClass = React.createClass
         div {className: 'column'},
           input
             className: 'submit'
+            onClick: @save
             type: 'submit'
             value: 'Save'
 
@@ -38,12 +52,15 @@ OptionsClass = React.createClass
         div {className: 'column double'},
           input
             className: 'input double'
+            value: @state.openFileName
+            onChange: @openFileNameChangeHandle
             placeholder: '<piece name>'
 
         div {className: 'column'},
           input
             className: 'submit'
             type: 'submit'
+            onClick: @open
             value: 'Open'
 
 Options = React.createFactory OptionsClass

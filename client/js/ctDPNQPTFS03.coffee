@@ -5,6 +5,7 @@ Dimension = require './dimension'
 Voices = require './voices'
 Time = require './time'
 Options = require './options'
+$ = require 'jquery'
 
 {a, p, div, input} = React.DOM
 
@@ -67,16 +68,7 @@ project =
         '132300'
         '154350'
       ]
-      rate: [
-        '1'
-        '1'
-        '1'
-        '1'
-        '1'
-        '1'
-        '1'
-        '1'
-      ]
+      rate: ['1','1','1','1','1','1','1','1']
     scale: []
     tonic: '25'
     beatLength: '22050'
@@ -279,6 +271,20 @@ AppClass = React.createClass
     @state.displayBar = newDisplayBar
     @setState displayBar: @state.displayBar
 
+  save: ->
+    destinationURL = 'http://localhost:8097/api/'
+    destinationURL += @props.project.title
+
+    $.post destinationURL, @state.project
+
+  open: (projectName) ->
+    destinationURL = 'http://localhost:8097/api/'
+    destinationURL += projectName
+
+    $.get destinationURL, (data) =>
+      if data.project?
+        @setState project: data.project
+
   render: ->
     div {},
       div {className: 'spacer'}
@@ -359,6 +365,9 @@ AppClass = React.createClass
             time: @state.project.piece.time
 
             title: @state.project.title
+
+            save: @save
+            open: @open
 
       div {className: 'spacer'}
 
