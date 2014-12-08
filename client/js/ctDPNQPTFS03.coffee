@@ -248,6 +248,12 @@ AppClass = React.createClass
     @state.displayBar = newDisplayBar
     @setState displayBar: @state.displayBar
 
+  tempoChange: (newTempo, tempoIndex) ->
+    console.log 'B', @state.project.piece.time.rate[tempoIndex], newTempo
+    @state.project.piece.time.rate[tempoIndex] = newTempo
+    console.log 'C', @state.project.piece.time.rate[tempoIndex]
+    @setState project: @state.project
+
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @props.project.title
@@ -340,6 +346,7 @@ AppClass = React.createClass
             onNoteChange: @noteChange
 
             time: @state.project.piece.time
+            onTempoChange: @tempoChange
 
             title: @state.project.title
 

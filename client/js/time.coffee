@@ -22,6 +22,12 @@ TimeClass = React.createClass
     if @props.displayBar > 0
       @props.onDisplayBarChange @props.displayBar - 1
 
+  tempoChangeHandle: (event) ->
+    console.log 'A'
+    tempoIndex = event.target.getAttribute 'data-index'
+    newValue = event.target.value
+    @props.onTempoChange newValue, tempoIndex
+
   render: ->
     div {},
       div {className: 'row'},
@@ -55,6 +61,7 @@ TimeClass = React.createClass
             type: 'submit'
             value: '>'
 
+
       div {className: 'row'},
         div {className: 'column half'}
 
@@ -63,30 +70,33 @@ TimeClass = React.createClass
             className: 'point'
             'tempo'
 
-      _.map organizeTimeColumns(@props.time.rate, (row, rowIndex) =>
-        afterFirstBarToDisplay = (@props.displayBar * @props.barLength) <= rowIndex
-        beforeLastBarToDisplay = rowIndex < ((@props.displayBar + 6) * @props.barLength)
+      _.map @props.time.rate, (rate, rateIndex) =>
+        afterFirstBarToDisplay = (@props.displayBar * @props.barLength) <= rateIndex
+        beforeLastBarToDisplay = rateIndex < ((@props.displayBar + 6) * @props.barLength)
         if afterFirstBarToDisplay and beforeLastBarToDisplay
           barLength = parseInt @props.barLength
           subLength = parseInt @props.subLength
           subModulus = parseInt @props.subModulus
           inputClassName = 'input half'
-          if (rowIndex % barLength) is 0
+
+          if (rateIndex % barLength) is 0
             inputClassName += ' verySpecial'
           else 
-            if (((rowIndex % barLength) + subModulus) % subLength) is 0
+            if (((rateIndex % barLength) + subModulus) % subLength) is 0
               inputClassName += ' special'
+
           div {className: 'row'},
             div {className: 'column half'},
               p
                 className: 'point'
-                expressRowIndex rowIndex, barLength, subLength, subModulus
+                expressRowIndex rateIndex, barLength, subLength, subModulus
 
             div {className: 'column half'},
               input
                 className: inputClassName
-                value: row[0]
-                'data-index': rowIndex
+                onChange: @tempoChangeHandle
+                value: rate
+                'data-index': rateIndex
 
 Time = React.createFactory TimeClass
 
