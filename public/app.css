@@ -63,7 +63,6 @@ body {
   background: url("checkboxTrue.png");
   width: 185px;
   height: 19px;
-  border: none;
   outline: none;
 }
 .alive.false {
@@ -179,9 +178,9 @@ body {
 .submit.critical:hover {
   background: #f29d31;
 }
-.submit.fleeting {
-  background: tsOliveDrab;
-  color: tsMcDonaldsYellow;
+.submit.current {
+  background: #c0c0c0;
+  color: #404040;
 }
 .submit.double {
   width: 370px;

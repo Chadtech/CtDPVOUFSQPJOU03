@@ -44,24 +44,24 @@ OptionsClass = React.createClass
         div {className: 'column'},
           input
             className: 'submit'
-            onClick: @save
-            type: 'submit'
-            value: 'Save'
+            onClick:   @save
+            type:      'submit'
+            value:     'save'
 
       div {className: 'row'},
         div {className: 'column double'},
           input
-            className: 'input double'
-            value: @state.openFileName
-            onChange: @openFileNameChangeHandle
+            className:   'input double'
+            value:       @state.openFileName
+            onChange:    @openFileNameChangeHandle
             placeholder: '<piece name>'
 
         div {className: 'column'},
           input
             className: 'submit'
-            type: 'submit'
-            onClick: @open
-            value: 'Open'
+            type:      'submit'
+            onClick:   @open
+            value:     'open'
 
 Options = React.createFactory OptionsClass
 

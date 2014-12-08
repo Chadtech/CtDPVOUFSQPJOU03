@@ -81,28 +81,31 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'properties'
 
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'beat length'
 
         div {className: 'column'},
           input
             className: 'input'
-            value: @props.beatLength
-            onChange: @beatLengthChangeHandle
+            value:     @props.beatLength
+            onChange:  @beatLengthChangeHandle
 
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'scale'
 
         _.map @props.scale, (step, stepIndex) =>
           div {className: 'column half'},
             input
-              className: 'input half'
+              className:    'input half'
               onChange:     @noteChangeHandle
               value:        @props.scale[stepIndex]
               'data-index': stepIndex
@@ -138,13 +141,14 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'add'
 
         div {className: 'column oneAndHalf'},
           input
-            className: 'input oneAndHalf'
-            onChange: @newDimensionsNameHandle
-            value: @state.newDimensionsName
+            className:   'input oneAndHalf'
+            onChange:    @newDimensionsNameHandle
+            value:       @state.newDimensionsName
             placeholder: '<dimension name>'
 
         div {className: 'column half'},
@@ -157,6 +161,7 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'tonic'
 
         div {className: 'column'},
@@ -168,35 +173,38 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'bar length'
 
         div {className: 'column'},
           input
             className: 'input'
-            onChange: @barLengthChangeHandle
-            value:    @props.barLength
+            onChange:  @barLengthChangeHandle
+            value:     @props.barLength
 
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'sub length'
 
         div {className: 'column'},
           input
             className: 'input'
-            onChange: @subLengthChangeHandle
-            value: @props.subLength
+            onChange:  @subLengthChangeHandle
+            value:     @props.subLength
 
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'sub modulus'
 
         div {className: 'column'},
           input
             className: 'input'
-            onChange: @subModulusChangeHandle
-            value: @props.subModulus
+            onChange:  @subModulusChangeHandle
+            value:     @props.subModulus
 
 Properties = React.createFactory PropertiesClass
 

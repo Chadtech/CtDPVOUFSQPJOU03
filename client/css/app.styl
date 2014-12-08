@@ -69,7 +69,6 @@ body
   background url('checkboxTrue.png')
   width 185px
   height 19px
-  border none
   outline none
   &.false
     background url('checkboxFalse.png')  
@@ -143,9 +142,9 @@ body
     background #f23d21
     &:hover
       background #f29d31
-  &.fleeting
-    background tsOliveDrab
-    color tsMcDonaldsYellow
+  &.current
+    background rgba(192, 192, 192, 1)
+    color rgba(64, 64, 64, 1)
   &.double
     width 370px
   inputBasics()
@@ -153,7 +152,7 @@ body
     margin-top 1.2em
   &:hover
     background rgba(192, 192, 192, 1)
-    color rgba(64, 64, 64 1)
+    color rgba(64, 64, 64, 1)
     
 
 

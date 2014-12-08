@@ -4,6 +4,8 @@ app = express()
 http = require 'http'
 {join} = require 'path'
 bodyParser = require 'body-parser'
+Nr = require './noideread'
+
 
 app.use bodyParser.urlencoded {extended: true}
 app.use bodyParser.json()
@@ -18,7 +20,8 @@ router.use (request, response, next) ->
 
 router.route '/:project'
   .get (request, response, next) ->
-    projectTitle = request.params.project + '.json'
+    projectTitle = request.params.project
+    projectTitle = projectTitle + '/' + projectTitle + '.json'
     fs.exists projectTitle, (exists) ->
       return next() unless exists
       fs.readFile projectTitle, 'utf8', (error, data) ->
@@ -28,10 +31,16 @@ router.route '/:project'
 
   .post (request, response, next) ->
     projectTitle = request.body.title
-    projectTitle += '.json'
-    fs.writeFile projectTitle, JSON.stringify request.body, null, 2
-    response.json msg: 'WORKD'
+    fs.mkdir projectTitle, (error) ->
+      if not error
+        JSONInPath = projectTitle + '/' + projectTitle + '.json'
+        fs.writeFile JSONInPath, JSON.stringify request.body, null, 2
+        response.json msg: 'WORKD'
 
+router.route '/play/:project'
+  .post (request, response, next) ->
+    Nr.read request.params.project, request.body
+    response.json {msg: 'WANT PLAY PROJECT'}
 
 app.use express.static join __dirname, 'public'
 

@@ -39,27 +39,28 @@ TimeClass = React.createClass
         div {className: 'column'},
           p
             className: 'point'
+
             'display bars'
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            onClick: @subtractOneDisplayBar
-            type: 'submit'
-            value: '<'
+            onClick:   @subtractOneDisplayBar
+            type:      'submit'
+            value:     '<'
 
         div {className: 'column half'},
           input
             className: 'input half'
-            onChange: @displayBarChangeHandle
-            value: @props.displayBar
+            onChange:  @displayBarChangeHandle
+            value:     @props.displayBar
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            onClick: @addOneDisplayBar
-            type: 'submit'
-            value: '>'
+            onClick:   @addOneDisplayBar
+            type:      'submit'
+            value:     '>'
 
 
       div {className: 'row'},
@@ -89,13 +90,16 @@ TimeClass = React.createClass
             div {className: 'column half'},
               p
                 className: 'point'
-                expressRowIndex rateIndex, barLength, subLength, subModulus
+                expressRowIndex rateIndex, 
+                  barLength 
+                  subLength 
+                  subModulus
 
             div {className: 'column half'},
               input
-                className: inputClassName
-                onChange: @tempoChangeHandle
-                value: rate
+                className:    inputClassName
+                onChange:     @tempoChangeHandle
+                value:        rate
                 'data-index': rateIndex
 
 Time = React.createFactory TimeClass

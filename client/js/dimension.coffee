@@ -96,36 +96,45 @@ DimensionClass = React.createClass
             className: 'point'
             @props.pageName
 
+        div {className: 'column'},
+          input
+            className: @props.playClass
+            onClick:   @props.onPlayClick
+            type:      'submit'
+            value:     @props.playSign
+
       div {className: 'row'},
         div {className: 'column'},
           p
             className: 'point'
+
             'display bars'
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            onClick: @subtractOneDisplayBar
-            type: 'submit'
-            value: '<'
+            onClick:   @subtractOneDisplayBar
+            type:      'submit'
+            value:     '<'
 
         div {className: 'column half'},
           input
             className: 'input half'
-            onChange: @displayBarChangeHandle
-            value: @props.displayBar
+            onChange:  @displayBarChangeHandle
+            value:     @props.displayBar
 
         div {className: 'column half'},
           input
             className: 'submit half'
-            onClick: @addOneDisplayBar
-            type: 'submit'
-            value: '>'
+            onClick:   @addOneDisplayBar
+            type:      'submit'
+            value:     '>'
 
       div {className: 'row'},
         div {className: 'column half'},
           p {className: 'point'},
             ''
+
         _.map (_.pluck @props.voices, 'name'), (name) ->
           div {className: 'column half'},
             p
@@ -147,6 +156,7 @@ DimensionClass = React.createClass
               inputClassName += ' special'
           div {className: 'row'},
             div {className: 'column half'},
+              
               p
                 className: 'point'
                 expressRowIndex rowIndex, 
@@ -157,37 +167,37 @@ DimensionClass = React.createClass
             _.map row, (cell, cellIndex) =>
               div {className: 'column half'},
                 input
-                  className: inputClassName
-                  onChange: @noteChange
-                  value: cell ? ''
+                  className:    inputClassName
+                  onChange:     @noteChange
+                  value:        cell ? ''
                   'data-voice': cellIndex
                   'data-note':  rowIndex
 
             if (rowIndex % @props.barLength) is 0
               div {className: 'column half'},
                 input
-                  className: 'submit half'
-                  onClick: @insertBar
-                  type: 'submit'
-                  value: '+ bar'
+                  className:   'submit half'
+                  onClick:     @insertBar
+                  type:        'submit'
+                  value:       '+ bar'
                   'data-note': rowIndex
 
             if (rowIndex % @props.barLength) is 1
               div {className: 'column half'},
                 input
-                  className: @state.removeClasses[rowIndex // @props.barLength]
-                  onClick: @removeBar
-                  type: 'submit'
+                  className:   @state.removeClasses[rowIndex // @props.barLength]
+                  onClick:     @removeBar
+                  type:        'submit'
                   'data-note': rowIndex 
-                  value: @state.removeValues[rowIndex // @props.barLength]
+                  value:       @state.removeValues[rowIndex // @props.barLength]
 
       div {className: 'row'},
         div {className: 'column half'},
           input
             className: 'submit half'
-            type: 'submit'
-            value: '+ bar'
-            onClick: @appendBar
+            type:      'submit'
+            value:     '+ bar'
+            onClick:   @appendBar
 
 Dimension = React.createFactory DimensionClass
 

@@ -5,6 +5,7 @@ Dimension = require './dimension'
 Voices = require './voices'
 Time = require './time'
 Options = require './options'
+Player = require './player'
 $ = require 'jquery'
 
 {a, p, div, input} = React.DOM
@@ -59,6 +60,8 @@ AppClass = React.createClass
     project: @props.project
     pageIndex: 1
     displayBar: 0
+    playSign: 'play'
+    playClass: 'submit'
 
   componentDidMount: ->
     window.getState = =>
@@ -249,14 +252,12 @@ AppClass = React.createClass
     @setState displayBar: @state.displayBar
 
   tempoChange: (newTempo, tempoIndex) ->
-    console.log 'B', @state.project.piece.time.rate[tempoIndex], newTempo
     @state.project.piece.time.rate[tempoIndex] = newTempo
-    console.log 'C', @state.project.piece.time.rate[tempoIndex]
     @setState project: @state.project
 
   save: ->
     destinationURL = 'http://localhost:8097/api/'
-    destinationURL += @props.project.title
+    destinationURL += @state.project.title
 
     $.post destinationURL, @state.project
 
@@ -268,6 +269,26 @@ AppClass = React.createClass
       if data.project?
         @setState project: data.project
 
+  playClick: ->
+    destinationURL = 'http://localhost:8097/api/play/'
+    destinationURL += @state.project.title
+
+    submission =
+      playFrom: @state.displayBar
+
+    $.post destinationURL, submission, (data) =>
+      console.log 'B', data
+
+    if @state.playSign is 'play'
+      @state.playSign = 'playing'
+      @state.playClass = 'submit current'
+    else
+      @state.playSign = 'play'
+      @state.playClass = 'submit'
+
+    @setState playSign: @state.playSign
+    @setState playClass: @state.playClass
+
   render: ->
     div {},
       div {className: 'spacer'}
@@ -277,7 +298,7 @@ AppClass = React.createClass
             div {className: 'column double'},
               p
                 className: 'point'
-                'CtDopnaqyoptFS03:NFE'
+                'CtDPNQPTFS03:NFE'
             div {className: 'column double'},
               input
                 className: 'input double'
@@ -352,6 +373,10 @@ AppClass = React.createClass
 
             save: @save
             open: @open
+
+            playSign: @state.playSign
+            playClass: @state.playClass
+            onPlayClick: @playClick
 
       div {className: 'spacer'}
 
