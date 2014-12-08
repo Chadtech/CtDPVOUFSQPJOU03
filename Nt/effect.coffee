@@ -92,7 +92,7 @@ module.exports =
     return output
 
   clip: (input, effect) ->
-    threshold = 32767 * effect.threshold or 32767
+    threshold = effect.threshold or 1
     threshold = threshold // 1
     output = []
 
@@ -324,7 +324,7 @@ module.exports =
       convolveIndex = 0
       while convolveIndex < seed.length
         sample = input[sampleIndex] * seed[convolveIndex]
-        sample /= 32767
+        #sample /= 32767
         sample *= factor 
         output[sampleIndex + convolveIndex] += sample
         convolveIndex++
