@@ -3,9 +3,6 @@ _ = require 'lodash'
 
 {div, input, p} = React.DOM
 
-organizeTimeColumns = (time) ->
-  _.zip time.samples, time.rate
-
 expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression = (rowIndex // barLength) + ''
   while rowIndexExpression.length < 5
@@ -66,7 +63,7 @@ TimeClass = React.createClass
             className: 'point'
             'tempo'
 
-      _.map organizeTimeColumns(@props.time), (row, rowIndex) =>
+      _.map organizeTimeColumns(@props.time.rate, (row, rowIndex) =>
         afterFirstBarToDisplay = (@props.displayBar * @props.barLength) <= rowIndex
         beforeLastBarToDisplay = rowIndex < ((@props.displayBar + 6) * @props.barLength)
         if afterFirstBarToDisplay and beforeLastBarToDisplay
@@ -88,7 +85,8 @@ TimeClass = React.createClass
             div {className: 'column half'},
               input
                 className: inputClassName
-                value: row[1]
+                value: row[0]
+                'data-index': rowIndex
 
 Time = React.createFactory TimeClass
 
