@@ -6,6 +6,13 @@ module.exports =
   generate: generate
   effect: effect
 
+  convertTo64Bit: (input) ->
+    sampleIndex = 0
+    while sampleIndex < input.length
+      input[sampleIndex] = input[sampleIndex] * 32767
+      sampleIndex++
+    input
+
   buildFile: (fileName, channels) ->
     manipulatedChannels = channels
     sameLength = true
