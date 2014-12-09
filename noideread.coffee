@@ -25,7 +25,6 @@ dimensionToIndex = (dimensions) ->
   
   _.zipObject dimensions, theirIndex
 
-
 writeAllBits = (project) =>
   for voice in project.piece.voices
     for beatIndex in [0..(voice.score.length - 1)] by 1
@@ -37,9 +36,19 @@ writeAllBits = (project) =>
             thisNote[key] = beat[key]
         thisNote = voiceProfiles[voice.attributes.type].generate thisNote
         thisNote = Nt.convertTo64Bit thisNote
-        noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
-        pathToThisNote = './' + project.title + '/' + noteFileName
-        Nt.buildFile pathToThisNote, [thisNote]
+      else
+        thisNote = []
+      noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
+      pathToThisNote = './' + project.title + '/' + noteFileName
+      Nt.buildFile pathToThisNote, [thisNote]
+
+assmbleAllBits = (project) =>
+  performanceLength = 0
+  beatLength = project.piece.beatLength
+  for beatDuration in project.piece.time.rate
+    performanceLength += beatLength
+    beatLength = beatLength * parseFloat beatDuration
+
 
 module.exports = 
   read: (projectTitle, message) ->
@@ -57,29 +66,13 @@ module.exports =
               _.map project.piece.voices, (voice, voiceIndex) =>
                 voice.score = 
                   _.map voice.score, (beat, beatIndex) =>
-                    if beat[dimensionIndexDictionary['tone']]?
+                    if beat['tone']?
                       convertedTone = 
                         scaleSystemToFrequencies project.piece.scale,
                           project.piece.tonic
-                          beat[dimensionIndexDictionary['tone']]
-                      beat[dimensionIndexDictionary['tone']] = 
-                        convertedTone
+                          beat['tone']
+                      beat['tone'] = convertedTone
                     beat
-                voice
-
-            # Convert beats into objects with dimensions as keys
-            # and their value as values
-            project.piece.voices =
-              _.map project.piece.voices, (voice, voiceIndex) =>
-                voice.score =
-                  _.map voice.score, (beat, beatIndex) =>
-                    keys = _.keys beat
-                    keys = _.map keys, (key) =>
-                      project.dimensions[parseInt key]
-                    values = _.map beat, (dimensionValue) ->
-                      dimensionValue
-
-                    _.zipObject keys, values
                 voice
 
             # Convert all dimension values to numbers
