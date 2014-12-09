@@ -1,5 +1,7 @@
 fs = require 'fs'
 _ = require 'lodash'
+Nt = require './Nt/noitech'
+voiceProfiles = require './voiceProfiles'
 
 zeroPadder = (number, numberOfZerosToFill) ->
   numberAsString = number + ''
@@ -22,6 +24,22 @@ dimensionToIndex = (dimensions) ->
     dimensionIndex
   
   _.zipObject dimensions, theirIndex
+
+writeAllBits = (project) ->
+  for voice in project.piece.voices
+    for beatIndex in [0..voice.score.length] by 1
+      beat = voice.score[beatIndex]
+      thisNote = _.clone voiceProfiles[voice.attributes.type].defaultValues
+      for key in _.keys beat
+        thisNote[key] = beat[key]
+      thisNote = voiceProfiles[voice.attributes.type].generate thisNote
+      thisNote = Nt.convertTo64Bit thisNote
+      noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
+      pathToThisNote = './' + project.title + '/' + noteFileName
+      Nt.buildFile pathToThisNote, [thisNote]
+
+for i in [0..n.length] by 1
+
 
 module.exports = 
   read: (projectTitle, message) ->
@@ -64,7 +82,8 @@ module.exports =
                     _.zipObject keys, values
                 voice
 
-            
+            console.log 'A', project.piece.voices[0]
+            console.log 'B', project.piece.voices[1]
 
 
 

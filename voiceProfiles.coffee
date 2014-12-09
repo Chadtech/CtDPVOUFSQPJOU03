@@ -7,7 +7,7 @@ module.exports =
 
     defaultValues:
       amplitude: 0.5
-      length: 22050
+      sustain: 22050
       tone: 404
 
     generate: (note) ->
