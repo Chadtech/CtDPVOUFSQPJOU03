@@ -298,13 +298,27 @@ AppClass = React.createClass
               p
                 className: 'point'
                 'CtDPNQPTFS03:NFE'
-            div {className: 'column double'},
+            div {className: 'column oneAndHalf'},
               input
-                className: 'input double'
-                value: @state.project.title
-                onChange: @pieceTitleHandle
+                className:   'input oneAndHalf'
+                value:       @state.project.title
+                onChange:    @pieceTitleHandle
                 placeholder: '<piece name>'
-                spellCheck: 'false'
+                spellCheck:  'false'
+
+            div {className: 'column half'},
+              input
+                className: 'submit half'
+                type: 'submit'
+                value: 'save'
+                onClick: @save
+
+            div {className: 'column'},
+              input
+                className: 'submit'
+                type: 'submit'
+                value: 'play'
+                onClick: @playClick
 
           div {className: 'row'},
             for page in @state.project.pages

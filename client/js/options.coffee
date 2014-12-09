@@ -34,20 +34,7 @@ OptionsClass = React.createClass
         div {className: 'column'},
           p {className: 'point'},
             'options'
-
-      div {className: 'row'},
-        div {className: 'column double'},
-          p
-            className: 'point'
-            @props.title
-
-        div {className: 'column'},
-          input
-            className: 'submit'
-            onClick:   @save
-            type:      'submit'
-            value:     'save'
-
+            
       div {className: 'row'},
         div {className: 'column double'},
           input

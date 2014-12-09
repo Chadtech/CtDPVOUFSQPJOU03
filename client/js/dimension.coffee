@@ -96,20 +96,6 @@ DimensionClass = React.createClass
             className: 'point'
             @props.pageName
 
-        div {className: 'column'},
-          input
-            className: @props.playClass
-            onClick:   @props.onPlayClick
-            type:      'submit'
-            value:     @props.playSign
-
-      div {className: 'row'},
-        div {className: 'column'},
-          p
-            className: 'point'
-
-            'display bars'
-
         div {className: 'column half'},
           input
             className: 'submit half'
@@ -156,7 +142,7 @@ DimensionClass = React.createClass
               inputClassName += ' special'
           div {className: 'row'},
             div {className: 'column half'},
-              
+
               p
                 className: 'point'
                 expressRowIndex rowIndex, 
