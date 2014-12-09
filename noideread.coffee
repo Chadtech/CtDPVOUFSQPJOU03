@@ -48,3 +48,25 @@ module.exports =
                         convertedTone
                     beat
                 voice
+
+            # Convert beats into objects with dimensions as keys
+            # and their value as values
+            project.piece.voices =
+              _.map project.piece.voices, (voice, voiceIndex) =>
+                voice.score =
+                  _.map voice.score, (beat, beatIndex) =>
+                    keys = _.keys beat
+                    keys = _.map keys, (key) =>
+                      project.dimensions[parseInt key]
+                    values = _.map beat, (dimensionValue) ->
+                      dimensionValue
+
+                    _.zipObject keys, values
+                voice
+
+            
+
+
+
+
+

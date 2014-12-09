@@ -5,7 +5,6 @@ Dimension = require './dimension'
 Voices = require './voices'
 Time = require './time'
 Options = require './options'
-Player = require './player'
 $ = require 'jquery'
 
 {a, p, div, input} = React.DOM
