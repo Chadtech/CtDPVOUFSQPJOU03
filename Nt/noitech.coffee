@@ -10,7 +10,8 @@ module.exports =
     sampleIndex = 0
     while sampleIndex < input.length
       input[sampleIndex] = (input[sampleIndex] * 32767) // 1
-       sampleIndex++
+      sampleIndex++
+      
     input
 
   buildFile: (fileName, channels) ->

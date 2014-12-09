@@ -69,6 +69,7 @@ TimeClass = React.createClass
         div {className: 'column half'},
           p
             className: 'point'
+
             'tempo'
 
       _.map @props.time.rate, (rate, rateIndex) =>
@@ -90,6 +91,7 @@ TimeClass = React.createClass
             div {className: 'column half'},
               p
                 className: 'point'
+                  
                 expressRowIndex rateIndex, 
                   barLength 
                   subLength 
