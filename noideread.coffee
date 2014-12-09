@@ -25,21 +25,21 @@ dimensionToIndex = (dimensions) ->
   
   _.zipObject dimensions, theirIndex
 
-writeAllBits = (project) ->
+
+writeAllBits = (project) =>
   for voice in project.piece.voices
-    for beatIndex in [0..voice.score.length] by 1
+    for beatIndex in [0..(voice.score.length - 1)] by 1
       beat = voice.score[beatIndex]
       thisNote = _.clone voiceProfiles[voice.attributes.type].defaultValues
-      for key in _.keys beat
-        thisNote[key] = beat[key]
-      thisNote = voiceProfiles[voice.attributes.type].generate thisNote
-      thisNote = Nt.convertTo64Bit thisNote
-      noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
-      pathToThisNote = './' + project.title + '/' + noteFileName
-      Nt.buildFile pathToThisNote, [thisNote]
-
-for i in [0..n.length] by 1
-
+      if beat['tone']?
+        for key in _.keys beat
+          if beat[key]?
+            thisNote[key] = beat[key]
+        thisNote = voiceProfiles[voice.attributes.type].generate thisNote
+        thisNote = Nt.convertTo64Bit thisNote
+        noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
+        pathToThisNote = './' + project.title + '/' + noteFileName
+        Nt.buildFile pathToThisNote, [thisNote]
 
 module.exports = 
   read: (projectTitle, message) ->
@@ -82,8 +82,17 @@ module.exports =
                     _.zipObject keys, values
                 voice
 
-            console.log 'A', project.piece.voices[0]
-            console.log 'B', project.piece.voices[1]
+            # Convert all dimension values to numbers
+            project.piece.voices =
+              _.map project.piece.voices, (voice, voiceIndex) =>
+                voice.score =
+                  _.map voice.score, (beat, beatIndex) =>
+                    _.mapValues beat, (value) =>
+                      parseFloat value
+                voice
+            
+            #console.log 'A', project.piece.voices[0].score
+            writeAllBits project
 
 
 

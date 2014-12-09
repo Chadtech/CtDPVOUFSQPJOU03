@@ -133,15 +133,15 @@ module.exports =
     while sampleIndex < whereEnd
       reduction = (1 - (reductionIndex * rateOfReduction))
       fadedSample = input[sampleIndex] * reduction
-      output.push Math.round(fadedSample)
+      output.push fadedSample
       reductionIndex++
       sampleIndex++
 
     while sampleIndex < input.length
-      output.push Math.round(input[sampleIndex] * finalVolume)
+      output.push input[sampleIndex] * finalVolume
       sampleIndex++
 
-    return output
+    output
 
   fadeIn: (input, effect) ->
     effect = effect or {}
@@ -154,14 +154,14 @@ module.exports =
 
     sampleIndex = 0
     while sampleIndex < whereBegin
-      output.push Math.round(input[sampleIndex] * startVolume)
+      output.push input[sampleIndex] * startVolume
       sampleIndex++
 
     reductionIndex = 0
     durationOfFade = whereEnd - whereBegin
     while sampleIndex < durationOfFade
       increase = ((durationOfFade - reductionIndex) * rateOfIncrease)
-      output.push Math.round(input[sampleIndex] * (1 - increase))
+      output.push input[sampleIndex] * (1 - increase)
       reductionIndex++
       sampleIndex++
 
