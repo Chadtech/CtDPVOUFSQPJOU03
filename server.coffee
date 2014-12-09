@@ -21,21 +21,30 @@ router.use (request, response, next) ->
 router.route '/:project'
   .get (request, response, next) ->
     projectTitle = request.params.project
-    projectTitle = projectTitle + '/' + projectTitle + '.json'
-    fs.exists projectTitle, (exists) ->
+    projectPath = projectTitle + '/' + projectTitle + '.json'
+    fs.exists projectPath, (exists) ->
       return next() unless exists
-      fs.readFile projectTitle, 'utf8', (error, data) ->
+      fs.readFile projectPath, 'utf8', (error, data) ->
         if error
           return next error
         response.json project: JSON.parse data
 
   .post (request, response, next) ->
     projectTitle = request.body.title
-    fs.mkdir projectTitle, (error) ->
-      if not error
+    fs.exists projectTitle, (exists) ->
+      if exists
         JSONInPath = projectTitle + '/' + projectTitle + '.json'
         fs.writeFile JSONInPath, JSON.stringify request.body, null, 2
         response.json msg: 'WORKD'
+      else
+        fs.mkdir projectTitle, (error) ->
+          if not error
+            JSONInPath = projectTitle + '/' + projectTitle + '.json'
+            fs.writeFile JSONInPath, JSON.stringify request.body, null, 2
+            response.json msg: 'WORKD'
+          else
+            console.log 'DID NOT WORK'
+            console.log error
 
 router.route '/play/:project'
   .post (request, response, next) ->

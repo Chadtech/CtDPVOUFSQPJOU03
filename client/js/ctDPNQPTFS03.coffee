@@ -46,7 +46,7 @@ project =
     ]
     time:
       rate: ['1','1','1','1','1','1','1','1']
-    scale: []
+    scale: ['1']
     tonic: '25'
     beatLength: '22050'
     barLength: '8'
