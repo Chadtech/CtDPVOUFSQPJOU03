@@ -37,10 +37,7 @@ DimensionClass = React.createClass
       removeValues: removeValues
       removeClasses: removeClasses
 
-    return removeState
-
-  handleDimensionName: (event) ->
-    @props.onNameChange @props.pageIndex, event.target.value
+    removeState
 
   noteChange: (event) ->
     voiceIndex = event.target.getAttribute 'data-voice'

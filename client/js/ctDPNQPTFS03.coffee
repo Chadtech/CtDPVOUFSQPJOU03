@@ -24,8 +24,8 @@ project =
           seed: undefined
         score: [
           {
-            '0': '0.5'
-            '1': '50'
+            'amplitude': '0.5'
+            'tone': '50'
           }, {}, {}, {}, {}, {}, {}, {}
         ]
       }
@@ -38,8 +38,8 @@ project =
           seed: undefined
         score: [
           {
-            '0': '0.5'
-            '1': '44'
+            'amplitude': '0.5'
+            'tone': '44'
           }, {}, {}, {}, {}, {}, {}, {}
         ]
       }
@@ -257,6 +257,7 @@ AppClass = React.createClass
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @state.project.title
+    console.log @state.project
 
     $.post destinationURL, @state.project
 
@@ -333,7 +334,7 @@ AppClass = React.createClass
             displayBar: @state.displayBar
             onDisplayBarChange: @displayBarChange
             pageIndex: @state.pageIndex
-            dimensionKey: @state.project.dimensions.indexOf @state.project.pages[@state.pageIndex]
+            dimensionKey: @state.project.pages[@state.pageIndex]
             pageName: @state.project.pages[@state.pageIndex]
             onNameChange: @dimensionNameChange
 
