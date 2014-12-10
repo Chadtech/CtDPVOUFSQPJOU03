@@ -46,7 +46,6 @@ DimensionClass = React.createClass
     @props.onNoteChange voiceIndex, noteIndex, value, @props.dimensionKey
 
   appendBar: ->
-    console.log 'A'
     @props.onAppendBar()
     @state.removeValues.push 'xx'
     @state.removeClasses.push 'submit half'

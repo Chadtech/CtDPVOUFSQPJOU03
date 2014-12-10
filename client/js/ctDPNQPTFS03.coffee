@@ -194,7 +194,6 @@ AppClass = React.createClass
     @setState project: @state.project
 
   appendBar: ->
-    console.log 'B', @state.project.piece.voices[0].score
     for voice in @state.project.piece.voices
       extraBeatIndex = 0
       while extraBeatIndex < @state.project.piece.barLength
