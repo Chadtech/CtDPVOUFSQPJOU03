@@ -14,6 +14,14 @@ module.exports =
       
     input
 
+  convertToFloat: (input) ->
+    sampleIndex = 0
+    while sampleIndex < input.length
+      input[sampleIndex] = input[sampleIndex] / 32767
+      sampleIndex++
+      
+    input
+
   buildFile: (fileName, channels) ->
     manipulatedChannels = channels
     sameLength = true
@@ -223,7 +231,7 @@ module.exports =
 
     filesData = header.concat(channelAudio)
     outputFile = new Buffer(filesData)
-    fs.writeFile fileName, outputFile
+    fs.writeFileSync fileName, outputFile
 
   open: (fileName) ->
     data = []
@@ -265,7 +273,7 @@ module.exports =
         sampleIndex++
       channelIndex++
 
-    return channels
+    channels
 
   mix: (input0, input1, place) ->
     output = []

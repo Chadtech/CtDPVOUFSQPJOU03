@@ -3,6 +3,8 @@ _ = require 'lodash'
 Nt = require './Nt/noitech'
 voiceProfiles = require './voiceProfiles'
 
+gen = Nt.generate
+
 zeroPadder = (number, numberOfZerosToFill) ->
   numberAsString = number + ''
   while numberAsString.length < numberOfZerosToFill
@@ -42,13 +44,44 @@ writeAllBits = (project) =>
       pathToThisNote = './' + project.title + '/' + noteFileName
       Nt.buildFile pathToThisNote, [thisNote]
 
-assmbleAllBits = (project) =>
-  performanceLength = 0
-  beatLength = project.piece.beatLength
-  for beatDuration in project.piece.time.rate
-    performanceLength += beatLength
-    beatLength = beatLength * parseFloat beatDuration
+assembleAllBits = (project) =>
+  voices = _.clone project.piece.voices
+  for voice in voices
+    voice.score = _.map voice.score, (beat, beatIndex) =>
+      pathToFile = project.title + '/'
+      pathToFile += voice.name + zeroPadder(beatIndex, 10) + '.wav'
+      thisBeat = Nt.open pathToFile
+      thisBeat = thisBeat[0]
+      #thisBeat = Nt.convertToFloat thisBeat[0]
+      thisBeat
 
+  performanceLength = 0
+  momentsInTime = []
+  beatLength = parseInt project.piece.beatLength
+  for beat in project.piece.time.rate
+    momentsInTime.push performanceLength
+    performanceLength += beatLength
+    beatLength = beatLength * parseFloat beat
+
+
+  DurationsOfEachVoicesLastNote = _.map voices, (voice) ->
+    voice.score[voice.score.length - 1].length
+
+  longestLastNote = _.max DurationsOfEachVoicesLastNote
+
+  performanceLength += longestLastNote
+
+  performance = gen.silence sustain: performanceLength
+
+  for voice in voices
+    voice.score = _.zip momentsInTime, voice.score
+
+  for voice in voices
+    for beat in voice.score
+      performance = Nt.mix beat[1], performance, beat[0]
+
+  pathToPiece = project.title + '/' + 'piece.wav'
+  Nt.buildFile pathToPiece, [performance]
 
 module.exports = 
   read: (projectTitle, message) ->
@@ -83,10 +116,9 @@ module.exports =
                     _.mapValues beat, (value) =>
                       parseFloat value
                 voice
-            
-            #console.log 'A', project.piece.voices[0].score
-            writeAllBits project
 
+            writeAllBits project
+            assembleAllBits project
 
 
 
