@@ -16,7 +16,7 @@ PropertiesClass = React.createClass
       deleteScaleValue: 'xx'
       dimensionClasses: dimensionClasses
 
-    return initialStates
+    initialStates
 
   newDimensionsNameHandle: (event) ->
     newDimensionsName = event.target.value
@@ -127,6 +127,7 @@ PropertiesClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+
             'remove'
 
         _.map @props.dimensions, (dimension, dimensionIndex) =>

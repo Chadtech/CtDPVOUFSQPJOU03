@@ -25,65 +25,65 @@
         },
         "score": [
           {
-            "amplitude": "0.2",
+            "amplitude": "0.3",
             "tone": "30",
             "sustain": "22050"
           },
           {
             "tone": "34",
-            "amplitude": "0.2",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "36",
-            "amplitude": "0.23",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "41",
-            "amplitude": "0.27",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "34",
-            "amplitude": "0.31",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "33",
-            "amplitude": "0.34",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "41",
-            "amplitude": "0.37",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "40",
-            "amplitude": "0.4",
+            "amplitude": "0.3",
             "sustain": "22050"
           },
           {
             "tone": "41",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "40",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "36",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "35",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "34",
             "sustain": "22050"
@@ -97,8 +97,8 @@
           {
             "tone": "34"
           },
-          null,
-          null,
+          "",
+          "",
           {
             "tone": "34"
           },
@@ -108,11 +108,11 @@
           {
             "tone": "33"
           },
-          null,
+          "",
           {
             "tone": "32"
           },
-          null,
+          "",
           {
             "tone": "31"
           },
@@ -140,7 +140,7 @@
           {
             "tone": "30"
           },
-          null,
+          "",
           {
             "tone": ""
           },
@@ -199,24 +199,24 @@
           },
           {
             "tone": "35",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "35",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "34",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "40",
-            "sustain": "11025"
+            "sustain": "44100"
           },
-          null,
+          "",
           {
             "tone": "40",
             "sustain": "22050"
@@ -239,14 +239,14 @@
           {
             "tone": "36"
           },
-          null,
+          "",
           {
             "tone": "35"
           },
           {
             "tone": "40"
           },
-          null,
+          "",
           {
             "tone": "35"
           },
@@ -260,7 +260,7 @@
             "tone": "31"
           },
           {
-            "tone": "40"
+            "tone": "32"
           },
           {
             "tone": "34"

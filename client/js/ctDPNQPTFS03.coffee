@@ -268,6 +268,7 @@ AppClass = React.createClass
     destinationURL += @state.project.title
 
     submission =
+      project:  @state.project
       playFrom: @state.displayBar
 
     $.post destinationURL, submission, (data) =>
@@ -365,9 +366,9 @@ AppClass = React.createClass
             onBarLengthChange:   @barLengthChange
             onSubLengthChange:   @subLengthChange
             onSubModulusChange:  @subModulusChange
-            beatLength:          @props.project.piece.beatLength
+            beatLength:          @state.project.piece.beatLength
             onBeatLengthChange:  @beatLengthChange
-            dimensions: _.filter @props.project.pages, (page) ->
+            dimensions: _.filter @state.project.pages, (page) ->
               if page is 'properties'
                 return false
               if page is 'voices'
