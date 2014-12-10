@@ -194,29 +194,30 @@ AppClass = React.createClass
     @setState project: @state.project
 
   appendBar: ->
-    for voice in @props.project.piece.voices
+    console.log 'B', @state.project.piece.voices[0].score
+    for voice in @state.project.piece.voices
       extraBeatIndex = 0
-      while extraBeatIndex < @props.project.piece.barLength
+      while extraBeatIndex < @state.project.piece.barLength
         voice.score.push {}
         extraBeatIndex++
 
     extraBeatIndex = 0
-    while extraBeatIndex < @props.project.piece.barLength
-      @props.project.piece.time.rate.push '1'
+    while extraBeatIndex < @state.project.piece.barLength
+      @state.project.piece.time.rate.push '1'
       extraBeatIndex++
 
     @setState project: @state.project
 
   insertBar: (barAt) ->
-    for voice in @props.project.piece.voices
+    for voice in @state.project.piece.voices
       barAtIteration = 0
-      while barAtIteration < @props.project.piece.barLength
+      while barAtIteration < @state.project.piece.barLength
         voice.score.splice barAt, 0, {}
         barAtIteration++
 
     barAtIteration = 0
-    while barAtIteration < @props.project.piece.barLength
-      @props.project.piece.time.rate.splice barAt, 0, '1'
+    while barAtIteration < @state.project.piece.barLength
+      @state.project.piece.time.rate.splice barAt, 0, '1'
       barAtIteration++
 
     @setState project: @state.project
