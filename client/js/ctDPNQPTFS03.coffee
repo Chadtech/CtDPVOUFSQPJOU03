@@ -27,8 +27,8 @@ project =
           seed: undefined
         score: [
           {
-            'amplitude': '0.5'
-            'tone': '50'
+            amplitude: '0.5'
+            tone: '50'
           }, {}, {}, {}, {}, {}, {}, {}
         ]
       }
@@ -41,8 +41,8 @@ project =
           seed: undefined
         score: [
           {
-            'amplitude': '0.5'
-            'tone': '44'
+            amplitude: '0.5'
+            tone: '44'
           }, {}, {}, {}, {}, {}, {}, {}
         ]
       }
@@ -252,8 +252,10 @@ AppClass = React.createClass
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @state.project.title
+    
+    projectAsString = JSON.stringify @state.project
 
-    $.post destinationURL, @state.project
+    $.post destinationURL, project: projectAsString
 
   open: (projectName) ->
     destinationURL = 'http://localhost:8097/api/'
@@ -261,14 +263,15 @@ AppClass = React.createClass
 
     $.get destinationURL, (data) =>
       if data.project?
-        @setState project: data.project
+        parsedProject = JSON.parse data.project
+        @setState project: parsedProject
 
   playClick: ->
     destinationURL = 'http://localhost:8097/api/play/'
     destinationURL += @state.project.title
 
     submission =
-      project:  @state.project
+      project:  JSON.stringify @state.project
       playFrom: @state.displayBar
 
     $.post destinationURL, submission, (data) =>

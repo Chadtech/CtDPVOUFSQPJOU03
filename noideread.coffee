@@ -127,16 +127,13 @@ module.exports =
     assembleAllBits project, false
 
   judgeNewest: (project) ->
+    project = JSON.parse project
+
     projectTitle = project.title
     pathToPrior = projectTitle + '/' + projectTitle + '.json'
     prior = fs.readFileSync pathToPrior, 'utf8'
     prior = JSON.parse prior
-    console.log 'PRIOR', prior
-    console.log 'PRESENT', project
 
-
-
-
-
+    console.log 'A', _.isEqual prior, project
 
 

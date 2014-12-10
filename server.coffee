@@ -27,20 +27,21 @@ router.route '/:project'
       fs.readFile projectPath, 'utf8', (error, data) ->
         if error
           return next error
-        response.json project: JSON.parse data
+        response.json project: data
 
   .post (request, response, next) ->
-    projectTitle = request.body.title
-    fs.exists projectTitle, (exists) ->
+    project = request.body.project
+    project = JSON.parse project
+    fs.exists project.title, (exists) ->
       if exists
-        JSONInPath = projectTitle + '/' + projectTitle + '.json'
+        JSONInPath = project.title + '/' + project.title + '.json'
         fs.writeFile JSONInPath, JSON.stringify request.body, null, 2
         response.json msg: 'WORKD'
       else
-        fs.mkdir projectTitle, (error) ->
+        fs.mkdir project.title, (error) ->
           if not error
-            JSONInPath = projectTitle + '/' + projectTitle + '.json'
-            fs.writeFile JSONInPath, JSON.stringify request.body, null, 2
+            JSONInPath = project.title + '/' + project.title + '.json'
+            fs.writeFile JSONInPath, request.body.project, null, 2
             response.json msg: 'WORKD'
           else
             console.log 'DID NOT WORK'
@@ -51,7 +52,7 @@ router.route '/play/:project'
     Nr.judgeNewest request.body.project
     #project = Nr.read request.params.project
     #project = Nr.play project
-    response.json {buffer: project}
+    response.json {buffer: 'NOPE'}
 
 app.use express.static join __dirname, 'public'
 
