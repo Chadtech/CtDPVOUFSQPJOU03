@@ -19,7 +19,7 @@ module.exports =
 
       output = gen.sine expression
       output = eff.ramp output
-      output = eff.fadeOut output
+      #output = eff.fadeOut output
 
       output
 
@@ -40,8 +40,8 @@ module.exports =
 
       output = gen.saw expression
       output = eff.ramp output
-      output = eff.fadeOut output
-      output = eff.fadeOut output
+      #output = eff.fadeOut output
+      #output = eff.fadeOut output
 
       output
 

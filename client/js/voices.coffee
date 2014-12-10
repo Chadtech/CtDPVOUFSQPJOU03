@@ -75,37 +75,44 @@ VoicesClass = React.createClass
       div {className: 'row'},
         div {className: 'column half'},
           p {className: 'point'},
+
             'voices'
 
       div {className: 'row'},
         div {className: 'column half'},
           p
             className: 'point'
+
             'name'
 
         div {className: 'column half'},
           p
             className: 'point'
+
             'type'
 
         div {className: 'column half'},
           p
             className: 'point'
+
             'seed'
 
         div {className: 'column half'},
           p
             className: 'point'
+
             'x pos'
 
         div {className: 'column half'},
           p
             className: 'point'
+
             'y pos'
 
         div {className: 'column half'},
           p
             className: 'point'
+            
             'remove'
 
       _.map @props.voices, (voice, voiceIndex) =>

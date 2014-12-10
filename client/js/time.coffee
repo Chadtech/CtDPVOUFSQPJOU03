@@ -23,7 +23,6 @@ TimeClass = React.createClass
       @props.onDisplayBarChange @props.displayBar - 1
 
   tempoChangeHandle: (event) ->
-    console.log 'A'
     tempoIndex = event.target.getAttribute 'data-index'
     newValue = event.target.value
     @props.onTempoChange newValue, tempoIndex
@@ -91,7 +90,7 @@ TimeClass = React.createClass
             div {className: 'column half'},
               p
                 className: 'point'
-                  
+
                 expressRowIndex rateIndex, 
                   barLength 
                   subLength 

@@ -7,6 +7,9 @@ Time = require './time'
 Options = require './options'
 $ = require 'jquery'
 
+AudioContext = window.audioContext or window.webkitAudioContext
+audioContext = new AudioContext
+
 {a, p, div, input} = React.DOM
 
 project =
@@ -66,10 +69,6 @@ AppClass = React.createClass
     window.getState = =>
       @state.project
 
-  onPieceUpdate: (piece) ->
-    @state.project.piece = piece
-    @setState project: @state.project
-
   pieceTitleHandle: (event) ->
     @state.project.title = event.target.value
     @setState project: @state.project
@@ -118,10 +117,6 @@ AppClass = React.createClass
               @state.project.pages.indexOf dimensionName
             @state.project.pages.splice indexToRemove, 1
             @setState project: @state.project
-
-  dimensionNameChange: (dimensionIndex, newName) ->
-    @state.project.pages[dimensionIndex] = newName
-    @setState project: @state.project
 
   voiceTypeChange: (voiceIndex, newType) ->
     @state.project.piece.voices[voiceIndex].attributes.type = newType
@@ -257,7 +252,6 @@ AppClass = React.createClass
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @state.project.title
-    console.log @state.project
 
     $.post destinationURL, @state.project
 
@@ -277,7 +271,19 @@ AppClass = React.createClass
       playFrom: @state.displayBar
 
     $.post destinationURL, submission, (data) =>
-      console.log 'B', data
+      numberOfFrames = data.buffer.length
+      audioBuffer = audioContext.createBuffer 1, numberOfFrames, 44100
+
+      audioBufferData = audioBuffer.getChannelData 0
+      frameIndex = 0
+      while frameIndex < numberOfFrames
+        audioBufferData[frameIndex] = data.buffer[frameIndex]
+        frameIndex++
+
+      source = audioContext.createBufferSource()
+      source.buffer = audioBuffer
+      source.connect audioContext.destination
+      source.start()
 
     if @state.playSign is 'play'
       @state.playSign = 'playing'
@@ -286,7 +292,7 @@ AppClass = React.createClass
       @state.playSign = 'play'
       @state.playClass = 'submit'
 
-    @setState playSign: @state.playSign
+    @setState playSign:  @state.playSign
     @setState playClass: @state.playClass
 
   render: ->
@@ -310,58 +316,57 @@ AppClass = React.createClass
             div {className: 'column half'},
               input
                 className: 'submit half'
-                type: 'submit'
-                value: 'save'
-                onClick: @save
+                type:      'submit'
+                value:     'save'
+                onClick:   @save
 
             div {className: 'column'},
               input
                 className: 'submit'
-                type: 'submit'
-                value: 'play'
-                onClick: @playClick
+                type:      'submit'
+                value:     'play'
+                onClick:   @playClick
 
           div {className: 'row'},
             for page in @state.project.pages
               div {className: 'column'},
                 input
                   className: 'submit'
-                  type: 'submit'
-                  value: page
-                  onClick: @tabClick
+                  type:      'submit'
+                  value:     page
+                  onClick:   @tabClick
 
           @determineCurrentPage
-            displayBar: @state.displayBar
+            displayBar:         @state.displayBar
             onDisplayBarChange: @displayBarChange
-            pageIndex: @state.pageIndex
-            dimensionKey: @state.project.pages[@state.pageIndex]
-            pageName: @state.project.pages[@state.pageIndex]
-            onNameChange: @dimensionNameChange
+            pageIndex:          @state.pageIndex
+            dimensionKey:       @state.project.pages[@state.pageIndex]
+            pageName:           @state.project.pages[@state.pageIndex]
 
-            voices: @state.project.piece.voices
-            onVoiceTypeChange: @voiceTypeChange
-            onVoiceNameChange: @voiceNameChange
-            onVoiceSeedChange: @voiceSeedChange
-            onVoiceXposChange: @voiceXposChange
-            onVoiceYposChange: @voiceYposChange
-            onSeedAdd: @seedAdd
-            onVoiceAdd: @voiceAdd
-            onVoiceDestroy: @voiceDestroy
+            voices:              @state.project.piece.voices
+            onVoiceTypeChange:   @voiceTypeChange
+            onVoiceNameChange:   @voiceNameChange
+            onVoiceSeedChange:   @voiceSeedChange
+            onVoiceXposChange:   @voiceXposChange
+            onVoiceYposChange:   @voiceYposChange
+            onSeedAdd:           @seedAdd
+            onVoiceAdd:          @voiceAdd
+            onVoiceDestroy:      @voiceDestroy
 
-            scale: @state.project.piece.scale
-            onScaleAdd: @scaleAdd
-            onScaleDestroy: @scaleDestroy
-            onStepChange: @stepChange
-            tonic: @state.project.piece.tonic
-            onTonicChange: @tonicChange
-            barLength: @state.project.piece.barLength
-            subLength: @state.project.piece.subLength
-            subModulus: @state.project.piece.subModulus
-            onBarLengthChange: @barLengthChange
-            onSubLengthChange: @subLengthChange
-            onSubModulusChange: @subModulusChange
-            beatLength: @props.project.piece.beatLength
-            onBeatLengthChange: @beatLengthChange
+            scale:               @state.project.piece.scale
+            onScaleAdd:          @scaleAdd
+            onScaleDestroy:      @scaleDestroy
+            onStepChange:        @stepChange
+            tonic:               @state.project.piece.tonic
+            onTonicChange:       @tonicChange
+            barLength:           @state.project.piece.barLength
+            subLength:           @state.project.piece.subLength
+            subModulus:          @state.project.piece.subModulus
+            onBarLengthChange:   @barLengthChange
+            onSubLengthChange:   @subLengthChange
+            onSubModulusChange:  @subModulusChange
+            beatLength:          @props.project.piece.beatLength
+            onBeatLengthChange:  @beatLengthChange
             dimensions: _.filter @props.project.pages, (page) ->
               if page is 'properties'
                 return false
@@ -373,14 +378,14 @@ AppClass = React.createClass
                 return false
               return true
             onDimensionDestroy: @dimensionDestroy
-            onDimensionAdd: @addDimension
+            onDimensionAdd:     @addDimension
 
-            onAppendBar: @appendBar
-            onRemoveBar: @removeBar
-            onInsertBar: @insertBar
+            onAppendBar:  @appendBar
+            onRemoveBar:  @removeBar
+            onInsertBar:  @insertBar
             onNoteChange: @noteChange
 
-            time: @state.project.piece.time
+            time:          @state.project.piece.time
             onTempoChange: @tempoChange
 
             title: @state.project.title
@@ -388,8 +393,8 @@ AppClass = React.createClass
             save: @save
             open: @open
 
-            playSign: @state.playSign
-            playClass: @state.playClass
+            playSign:    @state.playSign
+            playClass:   @state.playClass
             onPlayClick: @playClick
 
       div {className: 'spacer'}

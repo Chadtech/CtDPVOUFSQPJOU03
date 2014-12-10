@@ -6,11 +6,13 @@
     "voices",
     "time",
     "amplitude",
-    "tone"
+    "tone",
+    "sustain"
   ],
   "dimensions": [
     "amplitude",
-    "tone"
+    "tone",
+    "sustain"
   ],
   "piece": {
     "voices": [
@@ -23,36 +25,44 @@
         },
         "score": [
           {
-            "amplitude": "0.5",
-            "tone": "50"
+            "amplitude": "0.2",
+            "tone": "30",
+            "sustain": "22050"
           },
           {
-            "tone": "54",
-            "amplitude": "0.5"
+            "tone": "34",
+            "amplitude": "0.2",
+            "sustain": "22050"
           },
           {
-            "tone": "56",
-            "amplitude": "0.5"
+            "tone": "36",
+            "amplitude": "0.23",
+            "sustain": "22050"
           },
           {
-            "tone": "61",
-            "amplitude": "0.5"
+            "tone": "41",
+            "amplitude": "0.27",
+            "sustain": "22050"
           },
           {
-            "tone": "54",
-            "amplitude": "0.5"
+            "tone": "34",
+            "amplitude": "0.31",
+            "sustain": "22050"
           },
           {
-            "tone": "53",
-            "amplitude": "0.5"
+            "tone": "33",
+            "amplitude": "0.34",
+            "sustain": "22050"
           },
           {
-            "tone": "61",
-            "amplitude": "0.5"
+            "tone": "41",
+            "amplitude": "0.37",
+            "sustain": "22050"
           },
           {
-            "tone": "60",
-            "amplitude": "0.5"
+            "tone": "40",
+            "amplitude": "0.4",
+            "sustain": "22050"
           }
         ]
       },
@@ -65,36 +75,44 @@
         },
         "score": [
           {
-            "amplitude": "0.5",
-            "tone": "44"
+            "amplitude": "0.3",
+            "tone": "24",
+            "sustain": "22050"
           },
           {
-            "tone": "52",
-            "amplitude": "0.5"
+            "tone": "32",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "54",
-            "amplitude": "0.5"
+            "tone": "34",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "53",
-            "amplitude": "0.5"
+            "tone": "33",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "52",
-            "amplitude": "0.5"
+            "tone": "32",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "51",
-            "amplitude": "0.5"
+            "tone": "31",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "53",
-            "amplitude": "0.5"
+            "tone": "33",
+            "amplitude": "0.3",
+            "sustain": "22050"
           },
           {
-            "tone": "54",
-            "amplitude": "0.5"
+            "tone": "34",
+            "amplitude": "0.3",
+            "sustain": "22050"
           }
         ]
       }

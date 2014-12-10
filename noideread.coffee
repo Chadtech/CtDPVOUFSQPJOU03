@@ -9,7 +9,7 @@ zeroPadder = (number, numberOfZerosToFill) ->
   numberAsString = number + ''
   while numberAsString.length < numberOfZerosToFill
     numberAsString = '0' + numberAsString
-  return numberAsString
+  numberAsString
 
 scaleSystemToFrequencies = (scale, tonic, note) ->
   octave = note.substr 0, note.length - 1
@@ -44,7 +44,7 @@ writeAllBits = (project) =>
       pathToThisNote = './' + project.title + '/' + noteFileName
       Nt.buildFile pathToThisNote, [thisNote]
 
-assembleAllBits = (project) =>
+assembleAllBits = (project, saveAsFile) =>
   voices = _.clone project.piece.voices
   for voice in voices
     voice.score = _.map voice.score, (beat, beatIndex) =>
@@ -52,7 +52,6 @@ assembleAllBits = (project) =>
       pathToFile += voice.name + zeroPadder(beatIndex, 10) + '.wav'
       thisBeat = Nt.open pathToFile
       thisBeat = thisBeat[0]
-      #thisBeat = Nt.convertToFloat thisBeat[0]
       thisBeat
 
   performanceLength = 0
@@ -82,44 +81,53 @@ assembleAllBits = (project) =>
         performance = Nt.mix beat[1], performance, beat[0]
 
   pathToPiece = project.title + '/' + 'piece.wav'
-  Nt.buildFile pathToPiece, [performance]
+
+  if saveAsFile
+    Nt.buildFile pathToPiece, [performance]
+  else
+    return Nt.convertToFloat performance
 
 module.exports = 
-  read: (projectTitle, message) ->
-    fs.exists projectTitle, (exists) ->
-      if exists
-        projectJSON = projectTitle + '/' + projectTitle + '.json'
-        fs.readFile projectJSON, 'utf8', (error, project) ->
-          unless error
-            project = JSON.parse project
-            dimensionIndexDictionary = 
-              dimensionToIndex project.dimensions
+  read: (projectTitle) ->
+    if fs.existsSync projectTitle
 
-            # Convert tone dimension of each beat to frequency 
-            project.piece.voices = 
-              _.map project.piece.voices, (voice, voiceIndex) =>
-                voice.score = 
-                  _.map voice.score, (beat, beatIndex) =>
-                    if beat?['tone']
-                      convertedTone = 
-                        scaleSystemToFrequencies project.piece.scale,
-                          project.piece.tonic
-                          beat['tone']
-                      beat['tone'] = convertedTone
-                    beat
-                voice
+      projectJSON = projectTitle + '/' + projectTitle + '.json'
+      project = fs.readFileSync projectJSON, 'utf8'
+      project = JSON.parse project
+      dimensionIndexDictionary = 
+        dimensionToIndex project.dimensions
 
-            # Convert all dimension values to numbers
-            project.piece.voices =
-              _.map project.piece.voices, (voice, voiceIndex) =>
-                voice.score =
-                  _.map voice.score, (beat, beatIndex) =>
-                    _.mapValues beat, (value) =>
-                      parseFloat value
-                voice
+      # Convert tone dimension of each beat to frequency 
+      project.piece.voices = 
+        _.map project.piece.voices, (voice, voiceIndex) =>
+          voice.score = 
+            _.map voice.score, (beat, beatIndex) =>
+              if beat?['tone']
+                convertedTone = 
+                  scaleSystemToFrequencies project.piece.scale,
+                    project.piece.tonic
+                    beat['tone']
+                beat['tone'] = convertedTone
+              beat
+          voice
 
-            writeAllBits project
-            assembleAllBits project
+      # Convert all dimension values to numbers
+      project.piece.voices =
+        _.map project.piece.voices, (voice, voiceIndex) =>
+          voice.score =
+            _.map voice.score, (beat, beatIndex) =>
+              _.mapValues beat, (value) =>
+                parseFloat value
+          voice
+
+      project
+
+  play: (project) ->
+    writeAllBits project
+    assembleAllBits project, false
+
+
+
 
 
 

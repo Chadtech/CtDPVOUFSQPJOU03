@@ -48,8 +48,9 @@ router.route '/:project'
 
 router.route '/play/:project'
   .post (request, response, next) ->
-    Nr.read request.params.project, request.body
-    response.json {msg: 'WANT PLAY PROJECT'}
+    project = Nr.read request.params.project
+    project = Nr.play project
+    response.json {buffer: project}
 
 app.use express.static join __dirname, 'public'
 
