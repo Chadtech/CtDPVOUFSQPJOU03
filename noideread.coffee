@@ -78,7 +78,8 @@ assembleAllBits = (project) =>
 
   for voice in voices
     for beat in voice.score
-      performance = Nt.mix beat[1], performance, beat[0]
+      if beat[1]?
+        performance = Nt.mix beat[1], performance, beat[0]
 
   pathToPiece = project.title + '/' + 'piece.wav'
   Nt.buildFile pathToPiece, [performance]
@@ -99,7 +100,7 @@ module.exports =
               _.map project.piece.voices, (voice, voiceIndex) =>
                 voice.score = 
                   _.map voice.score, (beat, beatIndex) =>
-                    if beat['tone']?
+                    if beat?['tone']
                       convertedTone = 
                         scaleSystemToFrequencies project.piece.scale,
                           project.piece.tonic
