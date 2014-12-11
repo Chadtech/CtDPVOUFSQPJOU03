@@ -36,14 +36,12 @@ router.route '/:project'
       if exists
         JSONInPath = project.title + '/' + project.title + '.json'
         fs.writeFileSync JSONInPath, JSON.stringify request.body, null, 2
-        #Nr.assemble Nr.read project.title
         response.json msg: 'WORKD'
       else
         fs.mkdir project.title, (error) ->
           if not error
             JSONInPath = project.title + '/' + project.title + '.json'
             fs.writeFileSync JSONInPath, request.body.project, null, 2
-            #Nr.assemble Nr.read project.title
             response.json msg: 'WORKD'
           else
             console.log 'DID NOT WORK'
