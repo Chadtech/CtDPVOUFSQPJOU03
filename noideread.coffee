@@ -82,15 +82,9 @@ assembleAllBits = (project, saveAsFile) =>
 
   pathToPiece = project.title + '/' + 'piece.wav'
 
-  if saveAsFile
-    Nt.buildFile pathToPiece, [performance]
-  else
-    return Nt.convertToFloat performance
-
 module.exports = 
   read: (projectTitle) ->
     if fs.existsSync projectTitle
-
       projectJSON = projectTitle + '/' + projectTitle + '.json'
       project = fs.readFileSync projectJSON, 'utf8'
       project = JSON.parse project
@@ -122,9 +116,9 @@ module.exports =
 
       project
 
-  play: (project) ->
+  assemble: (project) ->
     writeAllBits project
-    assembleAllBits project, false
+    assembleAllBits project
 
   judgeNewest: (project) ->
     project = JSON.parse project
@@ -134,6 +128,9 @@ module.exports =
     prior = fs.readFileSync pathToPrior, 'utf8'
     prior = JSON.parse prior
 
-    console.log 'A', _.isEqual prior, project
+    if not fs.existsSync
+      return false
+
+    _.isEqual prior, project
 
 
