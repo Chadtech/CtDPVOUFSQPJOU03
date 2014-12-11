@@ -5,6 +5,12 @@ voiceProfiles = require './voiceProfiles'
 
 gen = Nt.generate
 
+enormousAndStatement = (statements) ->
+  output = false
+  for statement in statements
+    output = output and statement
+  output
+
 zeroPadder = (number, numberOfZerosToFill) ->
   numberAsString = number + ''
   while numberAsString.length < numberOfZerosToFill
@@ -82,6 +88,8 @@ assembleAllBits = (project, saveAsFile) =>
 
   pathToPiece = project.title + '/' + 'piece.wav'
 
+  Nt.buildFile pathToPiece, [performance]
+
 module.exports = 
   read: (projectTitle) ->
     if fs.existsSync projectTitle
@@ -128,9 +136,27 @@ module.exports =
     prior = fs.readFileSync pathToPrior, 'utf8'
     prior = JSON.parse prior
 
-    if not fs.existsSync
-      return false
+    reconstructFromScratch = not fs.existsSync projectTitle + '/piece.wav'
+    reconstructFromScratch = reconstructFromScratch
 
-    _.isEqual prior, project
+    console.log 'TIME', project.time, prior.time
+
+    DontReconstructIf = [
+      fs.existsSync projectTitle + '/piece.wav'
+      _.isEqual project.pages, prior.pages
+      _.isEqual (_.map project.piece.voices, (voice) -> voice.attributes),
+        (_.map prior.piece.voices, (voice) -> voice.attributes)
+      _.isEqual project.piece.time, prior.piece.time
+      _.isEqual project.piece.scale, prior.piece.scale
+      _.isEqual project.piece.tonic, prior.piece.tonic
+      _.isEqual project.piece.beatLength, prior.piece.beatLength
+    ]
+
+    if not enormousAndStatement DontReconstructIf
+      @assemble @read projectTitle
+
+
+
+
 
 

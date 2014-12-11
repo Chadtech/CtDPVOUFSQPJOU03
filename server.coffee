@@ -35,13 +35,13 @@ router.route '/:project'
     fs.exists project.title, (exists) ->
       if exists
         JSONInPath = project.title + '/' + project.title + '.json'
-        fs.writeFileSync JSONInPath, JSON.stringify request.body, null, 2
+        fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
         response.json msg: 'WORKD'
       else
         fs.mkdir project.title, (error) ->
           if not error
             JSONInPath = project.title + '/' + project.title + '.json'
-            fs.writeFileSync JSONInPath, request.body.project, null, 2
+            fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
             response.json msg: 'WORKD'
           else
             console.log 'DID NOT WORK'
@@ -49,7 +49,7 @@ router.route '/:project'
 
 router.route '/play/:project'
   .post (request, response, next) ->
-    #Nr.judgeNewest request.body.project
+    console.log 'a', Nr.judgeNewest request.body.project
     #project = Nr.read request.params.project
     #project = Nr.play project
     response.json {buffer: 'NOPE'}
