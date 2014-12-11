@@ -136,11 +136,6 @@ module.exports =
     prior = fs.readFileSync pathToPrior, 'utf8'
     prior = JSON.parse prior
 
-    reconstructFromScratch = not fs.existsSync projectTitle + '/piece.wav'
-    reconstructFromScratch = reconstructFromScratch
-
-    console.log 'TIME', project.time, prior.time
-
     DontReconstructIf = [
       fs.existsSync projectTitle + '/piece.wav'
       _.isEqual project.pages, prior.pages
