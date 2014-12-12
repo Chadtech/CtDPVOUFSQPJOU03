@@ -49,10 +49,10 @@ router.route '/:project'
 
 router.route '/play/:project'
   .post (request, response, next) ->
-    console.log 'a', Nr.judgeNewest request.body.project
+    #console.log 'a', Nr.judgeNewest request.body.project
     #project = Nr.read request.params.project
     #project = Nr.play project
-    response.json {buffer: 'NOPE'}
+    response.json {buffer: Nr.judgeNewest request.body.project}
 
 app.use express.static join __dirname, 'public'
 

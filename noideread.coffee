@@ -6,7 +6,7 @@ voiceProfiles = require './voiceProfiles'
 gen = Nt.generate
 
 enormousAndStatement = (statements) ->
-  output = false
+  output = true
   for statement in statements
     output = output and statement
   output
@@ -64,9 +64,9 @@ assembleAllBits = (project, saveAsFile) =>
   momentsInTime = []
   beatLength = parseInt project.piece.beatLength
   for beat in project.piece.time.rate
+    beatLength = (beatLength * parseFloat beat) // 1
     momentsInTime.push performanceLength
     performanceLength += beatLength
-    beatLength = beatLength * parseFloat beat
 
 
   DurationsOfEachVoicesLastNote = _.map voices, (voice) ->
@@ -148,8 +148,13 @@ module.exports =
     ]
 
     if not enormousAndStatement DontReconstructIf
+      console.log 'A.1'
+      JSONInPath = project.title + '/' + project.title + '.json'
+      fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
       @assemble @read projectTitle
 
+    console.log 'B'
+    Nt.convertToFloat (Nt.open projectTitle + '/' + 'piece.wav')[0]
 
 
 

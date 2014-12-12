@@ -32,14 +32,8 @@ TimeClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
+            
             'time'
-
-      div {className: 'row'},
-        div {className: 'column'},
-          p
-            className: 'point'
-
-            'display bars'
 
         div {className: 'column half'},
           input

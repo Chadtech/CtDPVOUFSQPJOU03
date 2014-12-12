@@ -252,7 +252,7 @@ AppClass = React.createClass
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @state.project.title
-    
+
     projectAsString = JSON.stringify @state.project
 
     $.post destinationURL, project: projectAsString
