@@ -10,6 +10,13 @@ expressRowIndex = (rowIndex, barLength, subLength, subModulus) =>
   rowIndexExpression += '.' + (rowIndex % barLength)
   rowIndexExpression
 
+productOfAllPriorRates = (thisRate, thisRateIndex, rates) ->
+  output = 1
+  while thisRateIndex >= 0
+    output *= rates[thisRateIndex]
+    thisRateIndex--
+  output
+
 TimeClass = React.createClass
   displayBarChangeHandle: (event) ->
     newDisplayBar = event.target.value
@@ -32,7 +39,7 @@ TimeClass = React.createClass
       div {className: 'row'},
         div {className: 'column'},
           p {className: 'point'},
-            
+
             'time'
 
         div {className: 'column half'},
@@ -59,11 +66,17 @@ TimeClass = React.createClass
       div {className: 'row'},
         div {className: 'column half'}
 
-        div {className: 'column half'},
+        div {className: 'column'},
           p
             className: 'point'
 
-            'tempo'
+            'rel tempo'
+
+        div {className: 'column'},
+          p
+            className: 'point'
+
+            'abs tempo'
 
       _.map @props.time.rate, (rate, rateIndex) =>
         afterFirstBarToDisplay = (@props.displayBar * @props.barLength) <= rateIndex
@@ -72,7 +85,7 @@ TimeClass = React.createClass
           barLength = parseInt @props.barLength
           subLength = parseInt @props.subLength
           subModulus = parseInt @props.subModulus
-          inputClassName = 'input half'
+          inputClassName = 'input'
 
           if (rateIndex % barLength) is 0
             inputClassName += ' verySpecial'
@@ -90,12 +103,17 @@ TimeClass = React.createClass
                   subLength 
                   subModulus
 
-            div {className: 'column half'},
+            div {className: 'column'},
               input
                 className:    inputClassName
                 onChange:     @tempoChangeHandle
                 value:        rate
                 'data-index': rateIndex
+
+            div {className: 'column'},
+              p
+                className: 'point'
+                ('' + productOfAllPriorRates rate, rateIndex, @props.time.rate).substring 0, 15
 
 Time = React.createFactory TimeClass
 
