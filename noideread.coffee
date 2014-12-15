@@ -148,15 +148,7 @@ module.exports =
     ]
 
     if not enormousAndStatement DontReconstructIf
-      console.log 'A.1'
       JSONInPath = project.title + '/' + project.title + '.json'
       fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
       @assemble @read projectTitle
-
-    console.log 'B'
-    Nt.convertToFloat (Nt.open projectTitle + '/' + 'piece.wav')[0]
-
-
-
-
-
+      thePieceAsNt.convertToFloat (Nt.open projectTitle + '/' + 'piece.wav')[0]

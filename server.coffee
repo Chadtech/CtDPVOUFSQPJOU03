@@ -10,7 +10,7 @@ Nr = require './noideread'
 app.use bodyParser.urlencoded {extended: true}
 app.use bodyParser.json()
 
-PORT = Number process.env.PORT or 8097
+PORT = Number process.env.PORT or 8098
 
 router = express.Router()
 

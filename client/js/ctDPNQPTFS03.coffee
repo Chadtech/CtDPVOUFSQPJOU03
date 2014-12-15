@@ -55,7 +55,8 @@ project =
     barLength: '8'
     subLength: '4'
     subModulus: '0'
-    convolveSeed: undefined
+    convolveSeedLeft: ''
+    convolveSeedRight: ''
 
 AppClass = React.createClass
   getInitialState: ->
@@ -249,6 +250,14 @@ AppClass = React.createClass
     @state.project.piece.time.rate[tempoIndex] = newTempo
     @setState project: @state.project
 
+  leftConvolvementChange: (newLeftChannel) ->
+    @state.project.piece.convolveSeedLeft = newLeftChannel
+    @setState project: @state.project
+
+  rightConvolvementChange: (newRightChannel) ->
+    @state.project.piece.convolveSeedRight = newRightChannel
+    @setState project: @state.project
+
   save: ->
     destinationURL = 'http://localhost:8097/api/'
     destinationURL += @state.project.title
@@ -357,20 +366,25 @@ AppClass = React.createClass
             onVoiceAdd:          @voiceAdd
             onVoiceDestroy:      @voiceDestroy
 
-            scale:               @state.project.piece.scale
-            onScaleAdd:          @scaleAdd
-            onScaleDestroy:      @scaleDestroy
-            onStepChange:        @stepChange
-            tonic:               @state.project.piece.tonic
-            onTonicChange:       @tonicChange
-            barLength:           @state.project.piece.barLength
-            subLength:           @state.project.piece.subLength
-            subModulus:          @state.project.piece.subModulus
-            onBarLengthChange:   @barLengthChange
-            onSubLengthChange:   @subLengthChange
-            onSubModulusChange:  @subModulusChange
-            beatLength:          @state.project.piece.beatLength
-            onBeatLengthChange:  @beatLengthChange
+            scale:                @state.project.piece.scale
+            onScaleAdd:            @scaleAdd
+            onScaleDestroy:        @scaleDestroy
+            onStepChange:          @stepChange
+            tonic:                 @state.project.piece.tonic
+            onTonicChange:         @tonicChange
+            barLength:             @state.project.piece.barLength
+            subLength:             @state.project.piece.subLength
+            subModulus:            @state.project.piece.subModulus
+            onBarLengthChange:     @barLengthChange
+            onSubLengthChange:     @subLengthChange
+            onSubModulusChange:    @subModulusChange
+            beatLength:            @state.project.piece.beatLength
+            onBeatLengthChange:    @beatLengthChange
+            onRightConvolveChange: @rightConvolvementChange
+            onLeftConvolveChange:  @leftConvolvementChange
+            rightConvolvementSeed: @state.project.piece.convolveSeedRight
+            leftConvolvementSeed:  @state.project.piece.convolveSeedLeft
+
             dimensions: _.filter @state.project.pages, (page) ->
               if page is 'properties'
                 return false

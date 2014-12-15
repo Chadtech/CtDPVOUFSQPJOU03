@@ -76,6 +76,14 @@ PropertiesClass = React.createClass
     @state.dimensionClasses.push 'submit'
     @setState dimensionClasses: @state.dimensionClasses
 
+  rightConvolvementChange: (event) ->
+    newRightConvolvement = event.target.value
+    @props.onRightConvolvementChange newRightConvolvement
+
+  leftConvolvementChange: (event) ->
+    newLeftConvolvement = event.target.value
+    @props.onLeftConvolvementChange newLeftConvolvement
+
   render: ->
     div {},
       div {className: 'row'},
@@ -206,6 +214,26 @@ PropertiesClass = React.createClass
             className: 'input'
             onChange:  @subModulusChangeHandle
             value:     @props.subModulus
+
+      div {className: 'row'},
+        div {className: 'column'},
+          p {className: 'point'},
+
+            'convolvement'
+
+        div {className: 'column oneAndHalf'},
+          input
+            className: 'input oneAndHalf'
+            placeholder: '<left channel name>'
+            onChange:  @leftConvolvementChange
+            value:     @props.leftConvolvementSeed
+
+        div {className: 'column oneAndHalf'},
+          input
+            className: 'input oneAndHalf'
+            placeholder: '<right channel name>'
+            onChange:  @rightConvolvementChange
+            value:     @props.rightConvolvementSeed
 
 Properties = React.createFactory PropertiesClass
 

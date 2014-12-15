@@ -1,3 +1,7 @@
+#_ = require 'lodash'
+
+# speed of sound in meters per sample is 0.0078 meters per sample
+
 module.exports =
   # invert the amplitude at each sample
   # IE
@@ -15,7 +19,6 @@ module.exports =
 
   shift: (input, effect) ->
     output = []
-
     if (effect.shift is 0) or (effect.shift is undefined)
       return input
 
@@ -28,11 +31,12 @@ module.exports =
     sampleIndex = 0
     while sampleIndex < input.length
       sample = input[sampleIndex] * (1 - shiftMagnitude) 
-      sample += input[sampleIndex] * shiftMag
+      sample += input[sampleIndex + 1] * shiftMagnitude
       output.push sample
       sampleIndex++
 
-    return output
+    output
+
 
   padBefore: (input, effect) ->
     paddingAmount = effect.paddingAmount or 30
@@ -90,6 +94,12 @@ module.exports =
       sampleIndex++
 
     return output
+
+  ###
+  bitCrush2: (buffer, effect) ->
+    _.map buffer, (sample) ->
+      ( input[sampleIndex] // effect.factor) * effect.factor
+  ###
 
   clip: (input, effect) ->
     threshold = effect.threshold or 1
@@ -530,9 +540,7 @@ module.exports =
         output[sampleIndex] += rendition[sampleIndex] / iterations
         sampleIndex++
 
-    return output
-
-
+    output
 
   glissando: (input, effect) ->
     output = []
