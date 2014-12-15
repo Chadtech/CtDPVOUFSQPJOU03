@@ -20,8 +20,8 @@
         "name": "voice0",
         "attributes": {
           "type": "sine",
-          "xpos": "0",
-          "ypos": "0"
+          "xpos": "-2",
+          "ypos": "10"
         },
         "score": [
           {
@@ -240,8 +240,8 @@
         "name": "voice1",
         "attributes": {
           "type": "saw",
-          "xpos": "0",
-          "ypos": "0"
+          "xpos": "2",
+          "ypos": "10"
         },
         "score": [
           {
@@ -459,7 +459,9 @@
       {
         "name": "voice3",
         "attributes": {
-          "type": "sine"
+          "type": "sine",
+          "xpos": "1",
+          "ypos": "5"
         },
         "score": [
           {

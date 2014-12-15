@@ -78,11 +78,11 @@ PropertiesClass = React.createClass
 
   rightConvolvementChange: (event) ->
     newRightConvolvement = event.target.value
-    @props.onRightConvolvementChange newRightConvolvement
+    @props.onRightConvolveChange newRightConvolvement
 
   leftConvolvementChange: (event) ->
     newLeftConvolvement = event.target.value
-    @props.onLeftConvolvementChange newLeftConvolvement
+    @props.onLeftConvolveChange newLeftConvolvement
 
   render: ->
     div {},

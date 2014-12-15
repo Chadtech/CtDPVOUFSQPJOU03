@@ -6,11 +6,10 @@ http = require 'http'
 bodyParser = require 'body-parser'
 Nr = require './noideread'
 
-
 app.use bodyParser.urlencoded {extended: true}
 app.use bodyParser.json()
 
-PORT = Number process.env.PORT or 8098
+PORT = Number process.env.PORT or 8097
 
 router = express.Router()
 
@@ -52,7 +51,8 @@ router.route '/play/:project'
     #console.log 'a', Nr.judgeNewest request.body.project
     #project = Nr.read request.params.project
     #project = Nr.play project
-    response.json {buffer: Nr.judgeNewest request.body.project}
+    project = Nr.judgeNewest request.body.project
+    response.json {buffer: project}
 
 app.use express.static join __dirname, 'public'
 

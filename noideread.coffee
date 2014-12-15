@@ -4,6 +4,8 @@ Nt = require './Nt/noitech'
 voiceProfiles = require './voiceProfiles'
 
 gen = Nt.generate
+eff = Nt.effect
+speedOfSound = 0.0078
 
 enormousAndStatement = (statements) ->
   output = true
@@ -42,13 +44,25 @@ writeAllBits = (project) =>
         for key in _.keys beat
           if beat[key]?
             thisNote[key] = beat[key]
+        console.log '0'
         thisNote = voiceProfiles[voice.attributes.type].generate thisNote
-        thisNote = Nt.convertTo64Bit thisNote
+        thisNote = eff.convolve thisNote, 
+          factor: 0.1
+          seed: Nt.convertToFloat (Nt.open 'artificialBathRoomL.wav')[0]
+        console.log '2'
+        thisNote = eff.giveSpatiality thisNote, 
+          xpos: parseFloat voice.attributes.xpos
+          ypos: parseFloat voice.attributes.ypos
+        thisNoteL = thisNote[0]
+        thisNoteR = thisNote[1]
+        thisNoteL = Nt.convertTo64Bit thisNoteL
+        thisNoteR = Nt.convertTo64Bit thisNoteR
       else
-        thisNote = []
+        thisNoteL = []
+        thisNoteR = []
       noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
       pathToThisNote = './' + project.title + '/' + noteFileName
-      Nt.buildFile pathToThisNote, [thisNote]
+      Nt.buildFile pathToThisNote, [thisNoteL, thisNoteR]
 
 assembleAllBits = (project, saveAsFile) =>
   voices = _.clone project.piece.voices
@@ -57,8 +71,9 @@ assembleAllBits = (project, saveAsFile) =>
       pathToFile = project.title + '/'
       pathToFile += voice.name + zeroPadder(beatIndex, 10) + '.wav'
       thisBeat = Nt.open pathToFile
-      thisBeat = thisBeat[0]
-      thisBeat
+      thisBeatL = thisBeat[0]
+      thisBeatR = thisBeat[1]
+      [thisBeatL, thisBeatR]
 
   performanceLength = 0
   momentsInTime = []
@@ -70,13 +85,19 @@ assembleAllBits = (project, saveAsFile) =>
 
 
   DurationsOfEachVoicesLastNote = _.map voices, (voice) ->
-    voice.score[voice.score.length - 1].length
+    left = voice.score[voice.score.length - 1][0].length
+    right = voice.score[voice.score.length - 1][1].length
+    if left > right
+      return left
+    else
+      return right
 
   longestLastNote = _.max DurationsOfEachVoicesLastNote
 
   performanceLength += longestLastNote
 
-  performance = gen.silence sustain: performanceLength
+  performanceL = gen.silence sustain: performanceLength
+  performanceR = gen.silence sustain: performanceLength
 
   for voice in voices
     voice.score = _.zip momentsInTime, voice.score
@@ -84,11 +105,12 @@ assembleAllBits = (project, saveAsFile) =>
   for voice in voices
     for beat in voice.score
       if beat[1]?
-        performance = Nt.mix beat[1], performance, beat[0]
+        performanceL = Nt.mix beat[1][0], performanceL, beat[0]
+        performanceR = Nt.mix beat[1][1], performanceR, beat[0]
 
   pathToPiece = project.title + '/' + 'piece.wav'
 
-  Nt.buildFile pathToPiece, [performance]
+  Nt.buildFile pathToPiece, [performanceL, performanceR]
 
 module.exports = 
   read: (projectTitle) ->
@@ -147,8 +169,11 @@ module.exports =
       _.isEqual project.piece.beatLength, prior.piece.beatLength
     ]
 
+    console.log 'A'
     if not enormousAndStatement DontReconstructIf
+      console.log 'B'
       JSONInPath = project.title + '/' + project.title + '.json'
       fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
-      @assemble @read projectTitle
-      thePieceAsNt.convertToFloat (Nt.open projectTitle + '/' + 'piece.wav')[0]
+      @assemble @read project.title
+      
+    Nt.convertToFloat (Nt.open projectTitle + '/' + 'piece.wav')[0]

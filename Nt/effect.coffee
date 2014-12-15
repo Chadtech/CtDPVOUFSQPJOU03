@@ -37,6 +37,36 @@ module.exports =
 
     output
 
+  giveSpatiality: (input, effect) ->
+    output = []
+    speedOfSound = 0.0078
+    xpos = effect.xpos or 1
+    ypos = effect.ypos or 1
+    leftEar = xpos - 0.05
+    rightEar = xpos + 0.05
+
+    leftEarDist = leftEar ** 2
+    leftEarDist += ypos ** 2
+    leftEarDist = leftEarDist ** 0.5
+
+    rightEarDist = rightEar ** 2
+    rightEarDist += ypos ** 2
+    rightEarDist = rightEarDist ** 0.5
+
+    leftEarDelay = leftEarDist * speedOfSound
+    rightEarDelay = rightEarDist * speedOfSound
+
+    leftEarContent = @padBefore input, 
+      paddingAmount: leftEarDelay // 1
+    leftEarContent = @shift input,
+      shift: leftEarDelay % 1
+
+    rightEarContent = @padBefore input,
+      paddingamount: rightEarDelay // 1
+    rightEarContent = @shift input,
+      shift: rightEarDelay % 1
+
+    [leftEarContent, rightEarContent]
 
   padBefore: (input, effect) ->
     paddingAmount = effect.paddingAmount or 30

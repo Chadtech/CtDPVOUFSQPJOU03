@@ -284,6 +284,7 @@ AppClass = React.createClass
       playFrom: @state.displayBar
 
     $.post destinationURL, submission, (data) =>
+      console.log 'C', data
       numberOfFrames = data.buffer.length
       audioBuffer = audioContext.createBuffer 1, numberOfFrames, 44100
 
