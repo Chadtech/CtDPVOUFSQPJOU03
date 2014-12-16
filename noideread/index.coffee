@@ -3,3 +3,4 @@ module.exports =
   read: require './read'
   subtract: require './subtract'
   write: require './write'
+  compare: require './compare'
