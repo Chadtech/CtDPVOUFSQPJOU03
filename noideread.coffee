@@ -20,18 +20,16 @@ module.exports =
   handleLatest: (project) ->
     project = JSON.parse project
 
-    projectTitle = project.title
-    pathToPrior = projectTitle + '/' + projectTitle + '.json'
-    prior = fs.readFileSync pathToPrior, 'utf8'
-    prior = JSON.parse prior
+    pathToPrior = project.title + '/' + project.title + '.json'
+    prior = JSON.parse fs.readFileSync pathToPrior, 'utf8'
 
     assessment = compare project, prior
 
     switch assessment.msg
       when 'reconstruct'
         assembleAll project
-        return Nt.convertToFloat Nt.open projectTitle + '/piece.wav'
+        return Nt.convertToFloat Nt.open project.title + '/piece.wav'
       when 'identical'
-        return Nt.convertToFloat Nt.open projectTitle + '/piece.wav'
+        return Nt.convertToFloat Nt.open project.title + '/piece.wav'
       when 'not identical'
         console.log assessment.differences

@@ -48,10 +48,7 @@ router.route '/:project'
 
 router.route '/play/:project'
   .post (request, response, next) ->
-    #console.log 'a', Nr.judgeNewest request.body.project
-    #project = Nr.read request.params.project
-    #project = Nr.play project
-    project = Nr.judgeNewest request.body.project
+    project = Nr.handleLatest request.body.project
     response.json {buffer: project}
 
 router.route '/init/:project'
