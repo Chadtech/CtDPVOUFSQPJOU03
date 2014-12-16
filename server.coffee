@@ -54,6 +54,12 @@ router.route '/play/:project'
     project = Nr.judgeNewest request.body.project
     response.json {buffer: project}
 
+router.route '/init/:project'
+  .post (request, response, next) ->
+    Nr.assembleAll JSON.parse request.body.project
+    response.json msg: 'FINISHD'
+
+
 app.use express.static join __dirname, 'public'
 
 app.use '/api', router

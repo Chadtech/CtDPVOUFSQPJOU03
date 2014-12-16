@@ -24,6 +24,9 @@ OptionsClass = React.createClass
   open: ->
     @props.open @state.openFileName
 
+  init: ->
+    @props.init()
+
   openFileNameChangeHandle: (event) ->
     @state.openFileName = event.target.value
     @setState openFileName: @state.openFileName
@@ -49,6 +52,15 @@ OptionsClass = React.createClass
             type:      'submit'
             onClick:   @open
             value:     'open'
+
+      div {className: 'row'},
+        div {className: 'column'},
+          input
+            className: 'submit'
+            type:      'submit'
+            value:     'initialize'
+            onClick:   @init
+
 
 Options = React.createFactory OptionsClass
 

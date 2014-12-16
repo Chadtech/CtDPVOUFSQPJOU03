@@ -275,6 +275,16 @@ AppClass = React.createClass
         parsedProject = JSON.parse data.project
         @setState project: parsedProject
 
+  init: ->
+    destinationURL = 'http://localhost:8097/api/init/'
+    destinationURL += @state.project.title
+
+    submission =
+      project: JSON.stringify @state.project
+
+    $.post destinationURL, submission, (data) =>
+      console.log data
+
   playClick: ->
     destinationURL = 'http://localhost:8097/api/play/'
     destinationURL += @state.project.title
@@ -411,6 +421,7 @@ AppClass = React.createClass
 
             save: @save
             open: @open
+            init: @init
 
             playSign:    @state.playSign
             playClass:   @state.playClass
