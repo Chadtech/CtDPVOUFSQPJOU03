@@ -8,14 +8,12 @@ gen = Nt.generate
 eff = Nt.effect
 
 module.exports = (current, prior) ->
-  priorTimesEqual = true
-  for timeIndex in [0..prior.piece.time.rate.length - 1] by 1
-    priorTime = prior.piece.time.rate
-    currentTime = current.piece.time.rate
-    console.log '9', priorTime[timeIndex], currentTime[timeIndex]
-    if priorTime[timeIndex] isnt currentTime[timeIndex]
-      console.log '9.1!!!!!!!!!!!!'
-      priorTimesEqual = false
+  priorTimesEqual = _.reduce(
+    _.map prior.piece.time.rate, (time, timeIndex) ->
+      time is current.piece.time.rate[timeIndex]
+    (sum, equality) ->
+      sum and equality
+  )
 
   dontReconstructIf = [
     _.isEqual current.pages, prior.pages
@@ -41,9 +39,9 @@ module.exports = (current, prior) ->
         prior: prior.piece.voices[voiceIndex].score[beatIndex]
       voice
 
-    #console.log differences
-    #console.log _.map differences, (voice, voiceIndex) ->
-    #  _.pluck voice, 'score'
+    console.log differences
+    console.log _.map differences, (voice, voiceIndex) ->
+      voice.score
 
     areIdentical = true
     for voice in differences
