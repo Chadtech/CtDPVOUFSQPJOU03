@@ -26,16 +26,19 @@ module.exports =
     assessment = compare project, prior
 
     switch assessment.msg
+
       when 'reconstruct'
         console.log 'RECONSTRUCT'
         assembleAll project
         return Nt.convertToFloat Nt.open project.title + '/piece.wav'
+      
       when 'identical'
         console.log 'IDENTICAL'
         pieceLoaded = Nt.open project.title + '/piece.wav'
         pieceLoaded = _.map pieceLoaded, (channel) ->
           Nt.convertToFloat channel
         return pieceLoaded
+
       when 'not identical'
-        console.log 'NOT IDENTICAL',
+        console.log 'NOT IDENTItCAL',
         console.log assessment.differences

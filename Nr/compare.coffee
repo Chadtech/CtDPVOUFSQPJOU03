@@ -1,5 +1,6 @@
 _ = require 'lodash'
 Nt = require '../Nt/noitech'
+difference = require './getDifferences'
 voiceProfiles = require '../voiceProfiles'
 {enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
@@ -11,9 +12,10 @@ module.exports = (current, prior) ->
   for timeIndex in [0..prior.piece.time.rate.length - 1] by 1
     priorTime = prior.piece.time.rate
     currentTime = current.piece.time.rate
+    console.log '9', priorTime[timeIndex], currentTime[timeIndex]
     if priorTime[timeIndex] isnt currentTime[timeIndex]
-      priorTimeEqual = false
-
+      console.log '9.1!!!!!!!!!!!!'
+      priorTimesEqual = false
 
   dontReconstructIf = [
     _.isEqual current.pages, prior.pages
@@ -25,17 +27,23 @@ module.exports = (current, prior) ->
     _.isEqual current.piece.beatLength, prior.piece.beatLength
   ]
 
-  console.log 'A', dontReconstructIf
-  if not enormousAndStatement dontReconstructIf
+  reconstruct = not _.reduce dontReconstructIf, (sum, condition) ->
+    sum and condition
+
+  if reconstruct
     return msg: 'reconstruct'
 
   else
     differences = _.clone current.piece.voices
-    differences = _.map differences, (voice, voiceIndex) =>
-      voice.score = _.map voice.score, (beat, beatIndex) =>
+    differences = _.map differences, (voice, voiceIndex) ->
+      voice.score = _.map voice.score, (beat, beatIndex) ->
         current: beat
         prior: prior.piece.voices[voiceIndex].score[beatIndex]
       voice
+
+    #console.log differences
+    #console.log _.map differences, (voice, voiceIndex) ->
+    #  _.pluck voice, 'score'
 
     areIdentical = true
     for voice in differences
