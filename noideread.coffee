@@ -3,7 +3,7 @@ _ = require 'lodash'
 Nt = require './Nt/noitech'
 voiceProfiles = require './voiceProfiles'
 {enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require './functionsOfConvenience'
-{assemble, read, subtract, write, compare} = require './noideread'
+{assemble, read, subtract, write, compare} = require './Nr'
 
 gen = Nt.generate
 eff = Nt.effect
@@ -27,9 +27,15 @@ module.exports =
 
     switch assessment.msg
       when 'reconstruct'
+        console.log 'RECONSTRUCT'
         assembleAll project
         return Nt.convertToFloat Nt.open project.title + '/piece.wav'
       when 'identical'
-        return Nt.convertToFloat Nt.open project.title + '/piece.wav'
+        console.log 'IDENTICAL'
+        pieceLoaded = Nt.open project.title + '/piece.wav'
+        pieceLoaded = _.map pieceLoaded, (channel) ->
+          Nt.convertToFloat channel
+        return pieceLoaded
       when 'not identical'
+        console.log 'NOT IDENTICAL',
         console.log assessment.differences

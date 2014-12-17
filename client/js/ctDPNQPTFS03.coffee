@@ -49,14 +49,14 @@ project =
     ]
     time:
       rate: ['1','1','1','1','1','1','1','1']
-    scale: ['1']
+    scale: ['1', '1.125', '1.25', '1.3333', '1.5', '1.6667', '1.875']
     tonic: '25'
     beatLength: '22050'
     barLength: '8'
     subLength: '4'
     subModulus: '0'
-    convolveSeedLeft: ''
-    convolveSeedRight: ''
+    convolveSeedLeft: 'artificialBathRoomL'
+    convolveSeedRight: 'artificialBathRoomR'
 
 AppClass = React.createClass
   getInitialState: ->
@@ -295,14 +295,15 @@ AppClass = React.createClass
 
     $.post destinationURL, submission, (data) =>
       console.log 'C', data
-      numberOfFrames = data.buffer.length
-      audioBuffer = audioContext.createBuffer 1, numberOfFrames, 44100
+      numberOfFrames = data.buffer[0].length
+      audioBuffer = audioContext.createBuffer 2, numberOfFrames, 44100
 
-      audioBufferData = audioBuffer.getChannelData 0
-      frameIndex = 0
-      while frameIndex < numberOfFrames
-        audioBufferData[frameIndex] = data.buffer[frameIndex]
-        frameIndex++
+      for channel in ([0,1])
+        audioBufferData = audioBuffer.getChannelData channel
+        frameIndex = 0
+        while frameIndex < numberOfFrames
+          audioBufferData[frameIndex] = data.buffer[channel][frameIndex]
+          frameIndex++
 
       source = audioContext.createBufferSource()
       source.buffer = audioBuffer
