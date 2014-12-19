@@ -3,11 +3,9 @@ _ = require 'lodash'
 module.exports = (current, prior) ->
   differences = _.map current.piece.voices, (voice, voiceIndex) ->
     voice.score = _.map voice.score, (beat, beatIndex) ->
-      console.log 'PRE', beat
       beat = 
         current: beat
         prior: prior.piece.voices[voiceIndex].score[beatIndex]
-      console.log 'POST', beat
       beat
     voice
 

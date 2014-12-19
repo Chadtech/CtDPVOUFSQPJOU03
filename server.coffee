@@ -29,7 +29,6 @@ router.route '/:project'
   .post (request, response, next) ->
     project = request.body.project
     project = JSON.parse project
-    console.log 'PROJECT', project
     if fs.existsSync project.title
       JSONInPath = project.title + '/' + project.title + '.json'
       fs.writeFileSync JSONInPath, JSON.stringify project, null, 2

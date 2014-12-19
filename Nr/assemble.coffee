@@ -7,7 +7,7 @@ gen = Nt.generate
 eff = Nt.effect
 
 module.exports = (project) ->
-  voices = _.clone project.piece.voices
+  voices = _.clone project.piece.voices, true
   for voice in voices
     voice.score = _.map voice.score, (beat, beatIndex) ->
       pathToFile = project.title + '/'
