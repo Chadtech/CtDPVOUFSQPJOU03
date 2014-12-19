@@ -43,10 +43,11 @@ router.route '/play/:project'
   .post (request, response, next) ->
     project = request.body.project
     project = JSON.parse project
+    clonedProject = _.clone project, true
     response.json {buffer: Nr.handleLatest project}
-    JSONInPath = project.title + '/' + project.title + '.json'
-    fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
-
+    JSONInPath = clonedProject.title + '/' + clonedProject.title + '.json'
+    fs.writeFileSync JSONInPath, JSON.stringify clonedProject, null, 2
+    
 router.route '/init/:project'
   .post (request, response, next) ->
     project = request.body.project
