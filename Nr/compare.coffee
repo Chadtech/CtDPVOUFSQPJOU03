@@ -31,9 +31,10 @@ module.exports = (current, prior) ->
   if reconstruct
     return msg: 'reconstruct'
   else
+    differences = difference current, prior
     reply =
       msg: 'differences'
-      difference: difference current, prior
+      difference: differences
     return reply
 
 
