@@ -1,7 +1,7 @@
 _ = require 'lodash'
 Nt = require '../Nt/noitech'
 voiceProfiles = require '../voiceProfiles'
-{enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
+{zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
 gen = Nt.generate
 eff = Nt.effect

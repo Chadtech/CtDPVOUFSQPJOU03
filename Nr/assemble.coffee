@@ -1,15 +1,15 @@
 _ = require 'lodash'
 Nt = require '../Nt/noitech'
 voiceProfiles = require '../voiceProfiles'
-{enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
+{zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
 gen = Nt.generate
 eff = Nt.effect
 
-module.exports = (project) =>
+module.exports = (project) ->
   voices = _.clone project.piece.voices
   for voice in voices
-    voice.score = _.map voice.score, (beat, beatIndex) =>
+    voice.score = _.map voice.score, (beat, beatIndex) ->
       pathToFile = project.title + '/'
       pathToFile += voice.name + zeroPadder(beatIndex, 10) + '.wav'
       thisBeat = Nt.open pathToFile

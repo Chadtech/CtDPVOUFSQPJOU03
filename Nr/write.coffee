@@ -1,12 +1,12 @@
 _ = require 'lodash'
 Nt = require '../Nt/noitech'
 voiceProfiles = require '../voiceProfiles'
-{enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
+{zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
 gen = Nt.generate
 eff = Nt.effect
 
-one = (project, voice, beatIndex) =>
+one = (project, voice, beatIndex) ->
   beat = voice.score[beatIndex]
   thisNote = _.clone voiceProfiles[voice.attributes.type].defaultValues
   if beat['tone']?
@@ -14,6 +14,11 @@ one = (project, voice, beatIndex) =>
       if beat[key]?
         thisNote[key] = beat[key]
     thisNote = voiceProfiles[voice.attributes.type].generate thisNote
+    
+    # Convolvement needs to happen on the channel level
+    # the convolvement seed needs to be determined by the
+    # project's convolvement properties.
+    
     thisNote = eff.convolve thisNote, 
       factor: 0.1
       seed: Nt.convertToFloat (Nt.open 'artificialBathRoomL.wav')[0]
@@ -34,7 +39,7 @@ one = (project, voice, beatIndex) =>
 module.exports =
   one: one
 
-  all: (project) =>
+  all: (project) ->
     for voice in project.piece.voices
       for beatIndex in [0..(voice.score.length - 1)] by 1
         one project, voice, beatIndex

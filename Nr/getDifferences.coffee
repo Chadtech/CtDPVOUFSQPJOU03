@@ -1,8 +1,14 @@
+_ = require 'lodash'
+
 module.exports = (current, prior) ->
   differences = _.map current.piece.voices, (voice, voiceIndex) ->
     voice.score = _.map voice.score, (beat, beatIndex) ->
-      current: beat
-      prior: prior.piece.voices[voiceIndex].score[beatIndex]
+      console.log 'PRE', beat
+      beat = 
+        current: beat
+        prior: prior.piece.voices[voiceIndex].score[beatIndex]
+      console.log 'POST', beat
+      beat
     voice
 
   differences = _.map differences, (voice, voiceIndex) ->
@@ -11,18 +17,14 @@ module.exports = (current, prior) ->
   differences = _.map differences, (voice, voiceIndex) ->
     _.map voice, (beat, beatIndex) ->
       if _.isEqual beat.current, beat.prior
-        beat = 'SAME'
+        beat = 'same'
       beat
-  ###
-  areIdentical = _.map differences, (voices, voiceIndex) ->
-    _.reduce voice, (beat, beatIndex) ->
-  ###
 
-
-  areIdentical = true
   for voice in differences
-    for beat in voice.score
-      if _.isEqual beat.current, beat.prior
-        beat = 'SAME'
-      else
-        areIdentical = false
+    console.log 'A.1', voice
+    for beat in voice
+      #console.log 'B', beat
+      if beat isnt 'same'
+        return differences
+
+  null

@@ -5,6 +5,7 @@ http = require 'http'
 {join} = require 'path'
 bodyParser = require 'body-parser'
 Nr = require './noideread'
+_ = require 'lodash'
 
 app.use bodyParser.urlencoded {extended: true}
 app.use bodyParser.json()
@@ -23,39 +24,39 @@ router.route '/:project'
     projectPath = projectTitle + '/' + projectTitle + '.json'
     fs.exists projectPath, (exists) ->
       return next() unless exists
-      fs.readFile projectPath, 'utf8', (error, data) ->
-        if error
-          return next error
-        response.json project: data
+      response.json project: fs.readFileSync projectPath, 'utf8'
 
   .post (request, response, next) ->
     project = request.body.project
     project = JSON.parse project
-    fs.exists project.title, (exists) ->
-      if exists
-        JSONInPath = project.title + '/' + project.title + '.json'
-        fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
-        response.json msg: 'WORKD'
-      else
-        fs.mkdir project.title, (error) ->
-          if not error
-            JSONInPath = project.title + '/' + project.title + '.json'
-            fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
-            response.json msg: 'WORKD'
-          else
-            console.log 'DID NOT WORK'
-            console.log error
+    console.log 'PROJECT', project
+    if fs.existsSync project.title
+      JSONInPath = project.title + '/' + project.title + '.json'
+      fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
+      response.json msg: 'WORKD'
+    else
+      fs.mkdirSync project.title
+      JSONInPath = project.title + '/' + project.title + '.json'
+      fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
+      response.json msg: 'WORKD'
 
 router.route '/play/:project'
   .post (request, response, next) ->
-    project = Nr.handleLatest request.body.project
-    response.json {buffer: project}
+    project = request.body.project
+    project = JSON.parse project
+    response.json {buffer: Nr.handleLatest project}
+    JSONInPath = project.title + '/' + project.title + '.json'
+    fs.writeFileSync JSONInPath, JSON.stringify project, null, 2
 
 router.route '/init/:project'
   .post (request, response, next) ->
-    Nr.assembleAll JSON.parse request.body.project
+    project = request.body.project
+    project = JSON.parse project
+    clonedProject = _.clone project, true
+    Nr.assembleAll project
     response.json msg: 'FINISHD'
-
+    JSONInPath = clonedProject.title + '/' + clonedProject.title + '.json'
+    fs.writeFileSync JSONInPath, JSON.stringify clonedProject, null, 2
 
 app.use express.static join __dirname, 'public'
 

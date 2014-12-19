@@ -2,7 +2,7 @@ fs = require 'fs'
 _ = require 'lodash'
 Nt = require './Nt/noitech'
 voiceProfiles = require './voiceProfiles'
-{enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require './functionsOfConvenience'
+{zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require './functionsOfConvenience'
 {assemble, read, subtract, write, compare} = require './Nr'
 
 gen = Nt.generate
@@ -18,27 +18,30 @@ module.exports =
   assembleAll: assembleAll
 
   handleLatest: (project) ->
-    project = JSON.parse project
-
     pathToPrior = project.title + '/' + project.title + '.json'
     prior = JSON.parse fs.readFileSync pathToPrior, 'utf8'
 
     assessment = compare project, prior
 
-    switch assessment.msg
-
-      when 'reconstruct'
+    if assessment.msg is 'reconstruct'
         console.log 'RECONSTRUCT'
         assembleAll project
-        return Nt.convertToFloat Nt.open project.title + '/piece.wav'
-      
-      when 'identical'
+        pieceLoaded = Nt.open project.title + '/piece.wav'
+        pieceLoaded = _.map pieceLoaded, (channel) ->
+          Nt.convertToFloat channel
+        return pieceLoaded
+    else
+      if assessment.difference is null
         console.log 'IDENTICAL'
         pieceLoaded = Nt.open project.title + '/piece.wav'
         pieceLoaded = _.map pieceLoaded, (channel) ->
           Nt.convertToFloat channel
         return pieceLoaded
-
-      when 'not identical'
-        console.log 'NOT IDENTItCAL',
-        console.log assessment.differences
+      else
+        console.log 'NOT IDENTICAL'
+        for beat in assessment.difference
+          console.log 'A', beat.current, beat.prior
+        pieceLoaded = Nt.open project.title + '/piece.wav'
+        pieceLoaded = _.map pieceLoaded, (channel) ->
+          Nt.convertToFloat channel
+        return pieceLoaded

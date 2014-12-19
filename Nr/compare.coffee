@@ -2,7 +2,7 @@ _ = require 'lodash'
 Nt = require '../Nt/noitech'
 difference = require './getDifferences'
 voiceProfiles = require '../voiceProfiles'
-{enormousAndStatement, zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
+{zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
 gen = Nt.generate
 eff = Nt.effect
@@ -30,33 +30,10 @@ module.exports = (current, prior) ->
 
   if reconstruct
     return msg: 'reconstruct'
-
   else
-    differences = _.clone current.piece.voices
-    differences = _.map differences, (voice, voiceIndex) ->
-      voice.score = _.map voice.score, (beat, beatIndex) ->
-        current: beat
-        prior: prior.piece.voices[voiceIndex].score[beatIndex]
-      voice
-
-    console.log differences
-    console.log _.map differences, (voice, voiceIndex) ->
-      voice.score
-
-    areIdentical = true
-    for voice in differences
-      for beat in voice.score
-        if _.isEqual beat.current, beat.prior
-          beat = 'SAME'
-        else
-          areIdentical = false
-
-    if areIdentical
-      return msg: 'identical'
-    else
-      reply = 
-        msg: 'not identical'
-        differences: differences
-      return reply
+    reply =
+      msg: 'differences'
+      difference: difference current, prior
+    return reply
 
 
