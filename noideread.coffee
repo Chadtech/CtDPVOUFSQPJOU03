@@ -39,10 +39,6 @@ module.exports =
         return pieceLoaded
       else
         console.log 'NOT IDENTICAL'
-        for voice in assessment.difference
-          for beat in voice
-            if typeof beat isnt 'string'
-              console.log 'A', beat.current, beat.prior
 
         priorsToRemove = _.clone assessment.difference, true
         priorsToRemove.piece.voices = 
@@ -53,7 +49,8 @@ module.exports =
               beat
             voice
 
-        console.log 'PRIORS TO REMOVE', priorsToRemove.piece.voices[0].score
+        subtractedPath = project.title + '/subtraction.wav'
+        Nt.buildFile subtractedPath, subtract.these priorsToRemove
 
         pieceLoaded = Nt.open project.title + '/piece.wav'
         pieceLoaded = _.map pieceLoaded, (channel) ->

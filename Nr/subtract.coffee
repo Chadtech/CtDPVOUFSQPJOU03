@@ -2,25 +2,43 @@ _ = require 'lodash'
 Nt = require '../Nt/noitech'
 voiceProfiles = require '../voiceProfiles'
 {zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
+fs = require 'fs'
 
 gen = Nt.generate
 eff = Nt.effect
 
-module.exports = (bitsToSubtract, momentsInTime, projectTitle) ->
-  piece = Nt.open projectTitle + '/' + projectTitle + '.wav'
-  pieceL = piece[0]
-  pieceR = piece[1]
+one = (toRemove, removeFrom, removeWhere) ->
+  noteNegative = eff.invert toRemove
+  Nt.mix noteNegative, removeFrom, removeWhere
 
-  # [beatIndex, voiceName]
-  for bitsToSubtract in bitsToSubtract
-    bitFileName = projectTitle + '/' + bitsToSubtract[1]
-    bitFileName += zeroPadder 10, bitsToSubtract[0]
-    thisBit = Nt.open bitFileName
 
-    thisBit = _.map thisBit, (channel) ->
-      eff.invert channel
+module.exports = 
+  one: one
 
-    pieceL Nt.mix thisBit[0], pieceL, momentsInTime[bitsToSubtract[0]]
-    pieceR Nt.mix thisBit[1], pieceR, momentsInTime[bitsToSubtract[1]]
+  these: (priorsToRemove) -> 
+    piece = Nt.open priorsToRemove.title + '/piece.wav'
+    pieceL = piece[0]
+    pieceR = piece[1]
 
-  Nt.buildFile projectTitle + '/' + projectTitle + '.wav', [pieceL, pieceR]
+    performanceLength = 0
+    momentsInTime = []
+    beatLength = parseInt priorsToRemove.piece.beatLength
+    for beat in priorsToRemove.piece.time.rate
+      beatLength = (beatLength * parseFloat beat) // 1
+      momentsInTime.push performanceLength
+      performanceLength += beatLength
+
+    for voice in priorsToRemove.piece.voices
+      for beatIndex in [0..voice.score.length - 1] by 1
+        if voice.score[beatIndex] isnt 'same'
+          noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
+          noteFileName = priorsToRemove.title + '/' + noteFileName
+          priorNote = 
+            Nt.open noteFileName
+          priorNoteL = priorNote[0]
+          priorNoteR = priorNote[1]
+
+          pieceL = one priorNoteL, pieceL, momentsInTime[beatIndex]
+          pieceR = one priorNoteR, pieceR, momentsInTime[beatIndex]
+
+    [pieceL, pieceR]
