@@ -11,7 +11,6 @@ one = (toRemove, removeFrom, removeWhere) ->
   noteNegative = eff.invert toRemove
   Nt.mix noteNegative, removeFrom, removeWhere
 
-
 module.exports = 
   one: one
 

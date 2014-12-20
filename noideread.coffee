@@ -3,7 +3,7 @@ _ = require 'lodash'
 Nt = require './Nt/noitech'
 voiceProfiles = require './voiceProfiles'
 {zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require './functionsOfConvenience'
-{assemble, read, subtract, write, compare} = require './Nr'
+{assemble, read, subtract, add, write, compare} = require './Nr'
 
 gen = Nt.generate
 eff = Nt.effect
@@ -39,6 +39,7 @@ module.exports =
         return pieceLoaded
       else
         console.log 'NOT IDENTICAL'
+        pathOfAltered = project.title + '/piece.wav'
 
         priorsToRemove = _.clone assessment.difference, true
         priorsToRemove.piece.voices = 
@@ -49,8 +50,19 @@ module.exports =
               beat
             voice
 
-        subtractedPath = project.title + '/subtraction.wav'
-        Nt.buildFile subtractedPath, subtract.these priorsToRemove
+        Nt.buildFile pathOfAltered, subtract.these priorsToRemove
+
+        currentsToAdd = _.clone assessment.difference, true
+        currentsToAdd.piece.voices = 
+          _.map currentsToAdd.piece.voices, (voice, voiceIndex) ->
+            voice.score = _.map voice.score, (beat, beatIndex) ->
+              unless beat is 'same'
+                console.log 'BEAT IS', beat
+                beat = beat.current
+              beat
+            voice
+
+        Nt.buildFile pathOfAltered, add.these currentsToAdd
 
         pieceLoaded = Nt.open project.title + '/piece.wav'
         pieceLoaded = _.map pieceLoaded, (channel) ->
