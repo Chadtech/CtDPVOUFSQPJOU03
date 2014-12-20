@@ -276,26 +276,26 @@ module.exports =
     channels
 
   mix: (input0, input1, place) ->
-    output = []
+    #output = []
     whereAt = place or 0
 
-    sampleIndex = 0
-    while sampleIndex < input1.length
-      output.push input1[sampleIndex]
-      sampleIndex++
+    #sampleIndex = 0
+    #while sampleIndex < input1.length
+    #  output.push input1[sampleIndex]
+    #  sampleIndex++
 
-    if (whereAt + input0.length) > input1.length
-      padding = 0
-      while padding < ((whereAt + input0.length) - input1.length)
-        output.push 0
-        padding++
+    #if (whereAt + input0.length) > input1.length
+    #  padding = 0
+    #  while padding < ((whereAt + input0.length) - input1.length)
+    #    input1.push 0
+    #    padding++
 
     sampleIndex = 0
     while sampleIndex < input0.length
-      output[whereAt + sampleIndex] += input0[sampleIndex]
+      input1[whereAt + sampleIndex] += input0[sampleIndex]
       sampleIndex++
 
-    return output
+    input1
 
   join: (input0, input1) ->
     output = []

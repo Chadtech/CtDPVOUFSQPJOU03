@@ -50,6 +50,7 @@ module.exports =
               beat
             voice
 
+        console.log 'A'
         Nt.buildFile pathOfAltered, subtract.these priorsToRemove
 
         currentsToAdd = _.clone assessment.difference, true
@@ -61,7 +62,7 @@ module.exports =
                 beat = beat.current
               beat
             voice
-
+        console.log 'C'
         Nt.buildFile pathOfAltered, add.these currentsToAdd
 
         pieceLoaded = Nt.open project.title + '/piece.wav'
