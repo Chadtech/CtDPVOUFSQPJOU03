@@ -17,6 +17,9 @@ OptionsClass = React.createClass
 
   getInitialState: ->
     openFileName: ''
+    insertAt: ''
+    numberOfBars: ''
+    fromBar: ''
 
   save: ->
     @props.save()
@@ -26,6 +29,21 @@ OptionsClass = React.createClass
 
   init: ->
     @props.init()
+
+  numberOfBarsHandle: (event) ->
+    @state.numberOfBars = event.target.value
+    @setState numberOfBars: @state.numberOfBars
+
+  fromBarHandle: (event) ->
+    @state.fromBar = event.target.value
+    @setState fromBar: @state.fromBar
+
+  insertAtHandle: (event) ->
+    @state.insertAt = event.target.value
+    @setState insertAt: @state.insertAt
+
+  copy: (event) ->
+    @props.copy @state.insertAt, @state.numberOfBars, @state.fromBar
 
   openFileNameChangeHandle: (event) ->
     @state.openFileName = event.target.value
@@ -60,6 +78,36 @@ OptionsClass = React.createClass
             type:      'submit'
             value:     'initialize'
             onClick:   @init
+
+      div {className: 'row'},
+        div {className: 'column'},
+          input
+            className: 'submit'
+            type:      'submit'
+            value:     'copy'
+            onClick:   @copy
+
+        div {className: 'column'},
+          input
+            className: 'input'
+            placeholder: '<insert at>'
+            value: @state.insertAt
+            onChange: @insertAtHandle
+
+        div {className: 'column'},
+          input
+            className: 'input'
+            placeholder: '<# of bars>'
+            value: @state.numberOfBars
+            onChange: @numberOfBarsHandle
+
+        div {className: 'column'},
+          input
+            className: 'input'
+            placeholder: '<from bar>'
+            value: @state.fromBar
+            onChange: @fromBarHandle
+
 
 
 Options = React.createFactory OptionsClass

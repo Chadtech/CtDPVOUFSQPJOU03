@@ -285,6 +285,41 @@ AppClass = React.createClass
     $.post destinationURL, submission, (data) =>
       console.log data
 
+  copy: (insertAt, numberOfBars, fromBar) ->
+    bottomBeat = parseInt fromBar
+    bottomBeat *= parseInt @state.project.piece.barLength
+    #bottomBeat--
+
+    topBeat = parseInt fromBar
+    topBeat += parseInt numberOfBars
+    topBeat *= @state.project.piece.barLength
+
+    insertAt = parseInt insertAt
+    insertAt *= parseInt @state.project.piece.barLength
+
+    for voice in @state.project.piece.voices
+      copiedBeats = []
+
+      for beatIndex in [0..voice.score.length - 1] by 1
+        if beatIndex > (bottomBeat - 1)
+          if topBeat > beatIndex
+            copiedBeats.push _.clone voice.score[beatIndex], true
+
+      while copiedBeats.length isnt 0
+        voice.score.splice insertAt, 0, copiedBeats.pop()
+
+    copiedTime = []
+    for timeIndex in [0..@state.project.piece.time.rate.length - 1] by 1
+      if timeIndex > bottomBeat
+        if topBeat > timeIndex
+          copiedTime.push _.clone @state.project.piece.time.rate[timeIndex], true
+
+    while copiedTime.length isnt 0
+      @state.project.piece.time.rate.splice insertAt, 0, copiedTime.pop()
+
+    @setState project: @state.project
+
+
   playClick: ->
     destinationURL = 'http://localhost:8097/api/play/'
     destinationURL += @state.project.title
@@ -294,7 +329,7 @@ AppClass = React.createClass
       playFrom: @state.displayBar
 
     $.post destinationURL, submission, (data) =>
-      console.log 'C', data
+      console.log 'DATA', data
       numberOfFrames = data.buffer[0].length
       audioBuffer = audioContext.createBuffer 2, numberOfFrames, 44100
 
@@ -423,6 +458,7 @@ AppClass = React.createClass
             save: @save
             open: @open
             init: @init
+            copy: @copy
 
             playSign:    @state.playSign
             playClass:   @state.playClass

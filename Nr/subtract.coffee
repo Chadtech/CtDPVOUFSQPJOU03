@@ -29,7 +29,6 @@ module.exports =
 
     for voice in priorsToRemove.piece.voices
       for beatIndex in [0..voice.score.length - 1] by 1
-        console.log 'B'
         if voice.score[beatIndex] isnt 'same'
           noteFileName = voice.name + zeroPadder(beatIndex, 10) + '.wav'
           noteFileName = priorsToRemove.title + '/' + noteFileName

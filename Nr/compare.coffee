@@ -1,6 +1,7 @@
 _ = require 'lodash'
 Nt = require '../Nt/noitech'
 difference = require './getDifferences'
+getRemainder = require './remainder'
 voiceProfiles = require '../voiceProfiles'
 {zeroPadder, scaleSystemToFrequencies, dimensionToIndex} = require '../functionsOfConvenience'
 
@@ -32,9 +33,11 @@ module.exports = (current, prior) ->
     return msg: 'reconstruct'
   else
     differences = difference current, prior
+    remainder = getRemainder current, prior
     reply =
       msg: 'differences'
       difference: differences
+      remainder: remainder
     return reply
 
 

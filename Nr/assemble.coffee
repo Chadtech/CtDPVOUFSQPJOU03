@@ -44,6 +44,7 @@ module.exports = (project) ->
     voice.score = _.zip momentsInTime, voice.score
 
   for voice in voices
+    console.log 'assembling ', voice.name
     for beat in voice.score
       if beat[1]?
         performanceL = Nt.mix beat[1][0], performanceL, beat[0]
