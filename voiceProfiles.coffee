@@ -81,3 +81,22 @@ module.exports =
       output = eff.fadeOut output
 
       output
+
+  sample:
+    defaultValues:
+      amplitude: 0.5
+      seed: 'luxPlate0'
+      sustain: 1
+      tone: 1
+
+    generate: (note) ->
+      expression = @defaultValues
+
+      if note isnt undefined
+        for key in Object.keys(note)
+          if note[key] isnt undefined
+            expression[key] = note[key]
+
+      output = (Nt.open expression.seed + '.wav')[0]
+      output = eff.convolve
+
